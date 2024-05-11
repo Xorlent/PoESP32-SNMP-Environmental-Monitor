@@ -28,6 +28,8 @@ This project produces a device with flashed configuration settings and no remote
 - SNMP monitoring node IP addresses
 - SNMP read community string
 
+*Bottom line: If you need or desire web management and/or SNMP write functionality, you could enhance this project's code or simply purchase a commercial product.
+
 ## Programming
 1. Disassemble the PoESP32 case
 2. Connect header pins on the back side of the mainboard to a USB-to-serial adapter set to 3.3v
