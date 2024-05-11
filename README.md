@@ -8,7 +8,7 @@ With Vertiv unceremoniously stop-shipping and then discontinuing [Geist Watchdog
 2. M5Stack [ENV IV sensor unit](https://shop.m5stack.com/products/env-iv-unit-with-temperature-humidity-air-pressure-sensor-sht40-bmp280), currently $5.95 USD
 3. A single USB-to-serial device or the [M5Stack ESP32 Downloader kit](https://shop.m5stack.com/products/esp32-downloader-kit), currently $9.95 USD
 
-## Cost analysis
+## Cost Analysis
 One-time cost for a USB-to-serial device: $9.95 plus tax and shipping  
 Total cost per unit: $31.85 plus tax and shipping  
 Programming time per unit: < 20 minutes  
@@ -31,6 +31,7 @@ This project produces a device with flashed configuration settings and no remote
 _Bottom line: If you need or desire web management and/or SNMP write functionality, you could enhance this project's code or simply purchase a commercial product._
 
 ## Programming
+_Once you've successfully programmed a single unit, this process takes less than 10 minutes from start-to-finish_
 1. Disassemble the PoESP32 case
 2. Connect header pins on the back side of the mainboard to a USB-to-serial adapter set to 3.3v
    - Ensure RX -> TX and TX -> RX
