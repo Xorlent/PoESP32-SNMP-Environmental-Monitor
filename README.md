@@ -4,9 +4,9 @@
 With Vertiv unceremoniously stop-shipping and then discontinuing [Geist Watchdog 15 units](https://www.vertiv.com/en-us/products-catalog/monitoring-control-and-management/monitoring/watchdog-15/#/benefits-features), we had to scrable to find a suitable equivalent device.  We were shocked to find a lack of decent options for small form-factor, PoE-powered devices that were not astronomically priced.  With M5Stack's PoE-powered ESP32 device in hand, we developed a network SNMP environmental monitoring device with a total all-in cost of less than 25% of competing products.
 
 ## Requiremements
-1. M5Stack PoESP32 device (https://shop.m5stack.com/products/esp32-ethernet-unit-with-poe), currently $25.90 USD
-2. M5Stack ENV IV sensor unit (https://shop.m5stack.com/products/env-iv-unit-with-temperature-humidity-air-pressure-sensor-sht40-bmp280), currently $5.95 USD
-3. A single USB-to-serial device or the M5Stack ESP32 Downloader kit (https://shop.m5stack.com/products/esp32-downloader-kit), currently $9.95 USD
+1. M5Stack [PoESP32 device](https://shop.m5stack.com/products/esp32-ethernet-unit-with-poe), currently $25.90 USD
+2. M5Stack [ENV IV sensor unit](https://shop.m5stack.com/products/env-iv-unit-with-temperature-humidity-air-pressure-sensor-sht40-bmp280), currently $5.95 USD
+3. A single USB-to-serial device or the [M5Stack ESP32 Downloader kit](https://shop.m5stack.com/products/esp32-downloader-kit), currently $9.95 USD
 
 ## Cost analysis
 One-time cost for a USB-to-serial device: $9.95 plus tax and shipping  
