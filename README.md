@@ -28,7 +28,7 @@ This project produces a device with flashed configuration settings and no remote
 - SNMP monitoring node IP addresses
 - SNMP read community string
 
-_Bottom line: If you need or desire web management and/or SNMP write functionality, you could enhance this project's code or simply purchase a commercial product._
+__Bottom line: If you need or desire web management and/or SNMP write functionality, you could enhance this project's code or simply purchase a commercial product.__
 
 ## Programming
 _Once you've successfully programmed a single unit, this process takes less than 10 minutes from start-to-finish_
