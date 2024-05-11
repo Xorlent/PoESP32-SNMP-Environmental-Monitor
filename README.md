@@ -35,14 +35,15 @@ _Once you've successfully programmed a single unit, this process takes less than
 1. Disassemble the PoESP32 case
 2. Connect header pins on the back side of the mainboard to a USB-to-serial adapter set to 3.3v
    - Ensure RX -> TX and TX -> RX
-3. Plug in the USB while grounding the G0 (GPIO 0) pin if using your own USB-to-serial adapter (not required if using M5Stack ESP32 Downloader kit)
-   - The ESP32 chip casing provides a good ground
-4. The device is now in bootloader mode
-5. In Arduino, open the project file and select the USB-to-serial adapter
-6. Configure ...................
-7. Write the program to the device
-8. Disconnect the USB-to-serial adapter and reassemble the case
-9. Plug in the ENV IV sensor unit
-10. Connect the PoESP32 to a PoE network port
-11. Configure your monitoring platform as appropriate
+3. Plug in the USB while grounding the G0 (GPIO 0) pin if using your own USB-to-serial adapter
+   - Grounding G0 is __not__ required if using M5Stack ESP32 Downloader kit
+   - The ESP32 chip casing provides a good ground if needed
+5. The device is now in bootloader mode
+6. In Arduino, open the project file and select the USB-to-serial adapter
+7. Configure ...................
+8. Write the program to the device
+9. Disconnect the USB-to-serial adapter and reassemble the case
+10. Plug in the ENV IV sensor unit
+11. Connect the PoESP32 to a PoE network port
+12. Configure your monitoring platform as appropriate
     - Paessler (PRTG) produce a great freely-downloadable SNMP tester for Windows, available [here](https://www.paessler.com/tools/snmptester)
