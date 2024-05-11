@@ -9,9 +9,9 @@ With Vertiv unceremoniously stop-shipping and then discontinuing [Geist Watchdog
 3. A single USB-to-serial device or the M5Stack ESP32 Downloader kit (https://shop.m5stack.com/products/esp32-downloader-kit), currently $9.95 USD
 
 ## Cost analysis
-One-time cost for a USB-to-serial device: $9.95 plus tax and shipping
-Total cost per unit: $31.85 plus tax and shipping
-Programming time per unit: 20 minutes
+One-time cost for a USB-to-serial device: $9.95 plus tax and shipping  
+Total cost per unit: $31.85 plus tax and shipping  
+Programming time per unit: 20 minutes  
 
 ## Device Comparison
 Vertiv Watchdog 15P (discontinued), $220 street price before stop-shipment
