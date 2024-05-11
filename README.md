@@ -22,4 +22,4 @@
 9. Plug in the ENV IV Unit (https://shop.m5stack.com/products/env-iv-unit-with-temperature-humidity-air-pressure-sensor-sht40-bmp280)
 10. Connect the PoESP32 to a PoE network port
 11. Configure your monitoring platform as appropriate
-   - Paessler, the developers of PRTG, have a great freely-downloadable SNMP tester for Windows, available [here](https://www.paessler.com/tools/snmptester)
+    - Paessler, the developers of PRTG, have a great freely-downloadable SNMP tester for Windows, available [here](https://www.paessler.com/tools/snmptester)
