@@ -42,7 +42,7 @@ _Once you've successfully programmed a single unit, this process takes less than
 6. Configure ...................
 7. Write the program to the device
 8. Disconnect the USB-to-serial adapter and reassemble the case
-9. Plug in the ENV IV Unit (https://shop.m5stack.com/products/env-iv-unit-with-temperature-humidity-air-pressure-sensor-sht40-bmp280)
+9. Plug in the ENV IV sensor unit
 10. Connect the PoESP32 to a PoE network port
 11. Configure your monitoring platform as appropriate
     - Paessler (PRTG) produce a great freely-downloadable SNMP tester for Windows, available [here](https://www.paessler.com/tools/snmptester)
