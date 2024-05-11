@@ -21,6 +21,13 @@ Programming time per unit: < 20 minutes
 - $199: MONNIT PoE-X Temperature
 - $295: Room Alert 3S
 
+## Device Capability Comparison
+This project produces a device with flashed configuration settings and no remote management capability.  Some would see this as a positive from a security-perspective, but it could prove challenging in network environments where change is constant.  A re-flash/re-programming is required to change any of the following configuration options:
+- Device IP and Subnet
+- IP Gateway
+- SNMP monitoring node IP addresses
+- SNMP read community string
+
 ## Programming
 1. Disassemble the PoESP32 case
 2. Connect header pins on the back side of the mainboard to a USB-to-serial adapter set to 3.3v
