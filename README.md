@@ -28,7 +28,7 @@ This project produces a device with flashed configuration settings and no remote
 - SNMP monitoring node IP addresses
 - SNMP read community string
 
-*Bottom line: If you need or desire web management and/or SNMP write functionality, you could enhance this project's code or simply purchase a commercial product.
+_Bottom line: If you need or desire web management and/or SNMP write functionality, you could enhance this project's code or simply purchase a commercial product._
 
 ## Programming
 1. Disassemble the PoESP32 case
