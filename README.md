@@ -1,7 +1,7 @@
 # PoESP32-SNMP-Environmental-Monitor
 
 ## Background
-With Vertiv unceremoniously stop-shipping and then discontinuing [Geist Watchdog 15 units](https://www.vertiv.com/en-us/products-catalog/monitoring-control-and-management/monitoring/watchdog-15/#/benefits-features), we had to scrable to find a suitable equivalent device.  We were shocked to find a lack of decent options for small form-factor, PoE-powered devices that were not astronomically priced.  With M5Stack's PoE-powered ESP32 device in hand, we developed a network SNMP environmental monitoring device with a total all-in cost of less than 30% of competing products.
+With Vertiv unceremoniously stop-shipping and then discontinuing [Geist Watchdog 15 units](https://www.vertiv.com/en-us/products-catalog/monitoring-control-and-management/monitoring/watchdog-15/#/benefits-features), we had to scrable to find a suitable equivalent device.  We were shocked to find a lack of decent options for small form-factor, PoE-powered devices that were not astronomically priced.  With M5Stack's PoE-powered ESP32 device in hand, we developed a network SNMP environmental monitoring device with a total all-in cost of less than 25% of competing products.
 
 ## Requiremements
 1. M5Stack PoESP32 device (https://shop.m5stack.com/products/esp32-ethernet-unit-with-poe), currently $25.90 USD
@@ -13,9 +13,13 @@ One-time cost for a USB-to-serial device: $9.95 plus tax and shipping
 Total cost per unit: $31.85 plus tax and shipping  
 Programming time per unit: 20 minutes  
 
-## Device Comparison
-Vertiv Watchdog 15P (discontinued), $220 street price before stop-shipment
-
+## Device Cost Comparison (temperature/humidity only)
+- $32: PoESP32-based device, $32
+- $220 before stop-ship: Vertiv Watchdog 15P (discontinued)
+- $190 on sale: AKCP sensorProbe1+ Pro
+- $315: NTI E-MICRO-TRHP
+- $199: MONNIT PoE-X Temperature
+- $295: Room Alert 3S
 
 ## Programming
 1. Disassemble the PoESP32 case
