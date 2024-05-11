@@ -11,7 +11,7 @@ With Vertiv unceremoniously stop-shipping and then discontinuing [Geist Watchdog
 ## Cost analysis
 One-time cost for a USB-to-serial device: $9.95 plus tax and shipping  
 Total cost per unit: $31.85 plus tax and shipping  
-Programming time per unit: 20 minutes  
+Programming time per unit: < 20 minutes  
 
 ## Device Cost Comparison (temperature/humidity only)
 - $32: PoESP32-based device
