@@ -1,3 +1,7 @@
+### Uptime
+
+### Hostname
+
 ### Temperature (.1 degrees C)
 1.3.6.1.4.1.119.5.1.2.1.5.1
 ### Temperature (degrees F)
