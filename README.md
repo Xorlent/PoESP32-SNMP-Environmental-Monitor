@@ -35,6 +35,10 @@ _Once you've successfully programmed a single unit, this process takes less than
 1. Disassemble the PoESP32 case
 2. Connect header pins on the back side of the mainboard to a USB-to-serial adapter set to 3.3v
    - Ensure RX -> TX and TX -> RX
+   - Connect VCC to the 3.3v output on the USB-to-serial adapter
+   - Connect GND to the ground from the USB-to-serial adapter
+> [!IMPORTANT]
+> Do not plug the PoESP32 device into Ethernet until step 11 or you risk damaging your USB port!
 3. Plug in the USB while grounding the G0 (GPIO 0) pin if using your own USB-to-serial adapter
    - NOTE: _Grounding G0 is __not__ required if using M5Stack ESP32 Downloader kit_
    - The USB-to-serial ground pin or the ESP32 chip casing provide a good ground if needed
