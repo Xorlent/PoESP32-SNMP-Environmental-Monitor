@@ -47,10 +47,10 @@ _Once you've successfully programmed a single unit, this process takes less than
    - NOTE: _Grounding G0 is __not__ required if using M5Stack ESP32 Downloader kit_
    - The USB-to-serial ground pin or the ESP32 chip casing provide a good ground if needed
 5. The device is now in bootloader mode
-6. In Arduino, open the project file
+6. In Arduino, open the project file (PoESP32-Env.ino)
    - Select Tools->Port and select the USB-to-serial adapter
-   - If you're unsure, unplug the adapter, look at the list, then plug it back in and select the new entry (repeating step 3)
-7. Edit the IP address, subnet, gateway, SNMP read community, and authorized hosts lists at the very top of the file.
+   - If you're unsure, unplug the USB-to-serial adapter, look at the port list, then plug it back in and select the new entry (repeating step 3)
+   - Edit the IP address, subnet, gateway, SNMP read community, and authorized hosts lists at the very top of the file.
 8. Select Sketch->Upload to flash the device
 9. Disconnect the USB-to-serial adapter and reassemble the case
 10. Plug in the ENV IV sensor unit
