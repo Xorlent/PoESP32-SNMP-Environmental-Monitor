@@ -23,10 +23,11 @@ Programming time per unit: < 20 minutes
 
 ## Device Capability Comparison
 This project produces a SNMPv1/2 temperature and humidity monitoring device with flashed configuration settings and no remote management capability.  Some would see this as a positive from a security-perspective, but it could prove challenging in network environments where change is constant.  A re-flash/re-programming is required to change any configuration options:
-- Device IP and Subnet
-- IP Gateway
-- Authorized SNMP monitoring node IP address list
+- Device IP and subnet
+- IP gateway
 - SNMP read community string
+- Authorized SNMP monitoring node IP address list
+
 
 __Bottom line: If you need SNMPv3 or desire web management and/or SNMP write functionality, you could enhance this project's code or simply purchase a commercial product.__
 
