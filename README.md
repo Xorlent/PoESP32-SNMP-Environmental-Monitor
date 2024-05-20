@@ -36,7 +36,7 @@ _Once you've successfully programmed a single unit, this process takes less than
 2. Connect header pins on the back side of the mainboard to a USB-to-serial adapter set to 3.3v
    - Ensure RX -> TX and TX -> RX
 3. Plug in the USB while grounding the G0 (GPIO 0) pin if using your own USB-to-serial adapter
-   - Grounding G0 is __not__ required if using M5Stack ESP32 Downloader kit
+   - NOTE: _Grounding G0 is __not__ required if using M5Stack ESP32 Downloader kit_
    - The ESP32 chip casing provides a good ground if needed
 5. The device is now in bootloader mode
 6. In Arduino, open the project file and select the USB-to-serial adapter
