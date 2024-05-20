@@ -32,8 +32,9 @@ __Bottom line: If you need SNMPv3 or desire web management and/or SNMP write fun
 
 ## Programming
 _Once you've successfully programmed a single unit, this process takes less than 15 minutes from start-to-finish_
-1. Disassemble the PoESP32 case
-2. Connect header pins on the back side of the mainboard to a USB-to-serial adapter set to 3.3v
+1. Set up your Arduino programming environment
+2. Disassemble the PoESP32 case
+3. Connect header pins on the back side of the mainboard to a USB-to-serial adapter set to 3.3v
    - Ensure RX -> TX and TX -> RX
    - Connect VCC to the 3.3v output on the USB-to-serial adapter
    - Connect GND to the ground from the USB-to-serial adapter
