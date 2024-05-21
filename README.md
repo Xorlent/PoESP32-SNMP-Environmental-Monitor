@@ -31,7 +31,7 @@ This project produces a SNMPv1/2 temperature and humidity monitoring device with
 __Bottom line: If you need SNMPv3 or desire web management and/or SNMP write functionality, you could enhance this project's code or simply purchase a commercial product.__
 
 ## Programming
-_Once you've successfully programmed a single unit, this process takes less than 10 minutes from start-to-finish_
+_Once you've successfully programmed a single unit, skip step 1.  This process takes less than 10 minutes from start-to-finish_
 1. [Set up your Arduino programming environment](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/ARDUINO-SETUP.md)
 2. Disassemble the PoESP32 case
    - You will need a 1.5 mm allen wrench to remove a single screw
