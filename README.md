@@ -35,7 +35,7 @@ _Once you've successfully programmed a single unit, skip step 1.  This process t
 1. [Set up your Arduino programming environment](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/ARDUINO-SETUP.md)
 2. Disassemble the PoESP32 case
    - You will need a 1.5 mm allen wrench to remove a single screw
-   - Inserting a small flat head screwdriver into the slots flanking the Ethernet jack, carefully separate the case halves; work it side by side to avoid breaking the case
+   - Inserting a small flat head screwdriver into the slots flanking the Ethernet jack, carefully separate the case halves; work it side by side to avoid damage
 3. In Arduino, open the project file (PoESP32-Env.ino)
    - Edit the IP address, subnet, gateway, SNMP read community, and authorized hosts lists at the very top of the file.
 4. With the USB-to-serial adapter unplugged, insert the pins in the correct orientation on the back of the PoESP32 mainboard [PICTURE](https://nada.com)
