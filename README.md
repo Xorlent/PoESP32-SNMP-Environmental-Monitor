@@ -28,14 +28,13 @@ This project produces a SNMPv1/2 temperature and humidity monitoring device with
 - SNMP read community string
 - Authorized SNMP monitoring node IP address list
 
-
 __Bottom line: If you need SNMPv3 or desire web management and/or SNMP write functionality, you could enhance this project's code or simply purchase a commercial product.__
 
 ## Programming
 _Once you've successfully programmed a single unit, this process takes less than 15 minutes from start-to-finish_
 1. [Set up your Arduino programming environment](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/ARDUINO-SETUP.md)
 2. Disassemble the PoESP32 case
-   - You will need a 2mm allen wrench to remove a single screw
+   - You will need a 1.5 mm allen wrench to remove a single screw
    - Inserting a small flat head screwdriver into the slots opposite the Ethernet jack, carefully separate the case halves; work it side by side to avoid breaking the case
 4. Connect header pins on the back side of the mainboard to a USB-to-serial adapter set to 3.3v
    - Ensure RX -> TX and TX -> RX
