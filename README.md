@@ -54,5 +54,8 @@ _Once you've successfully programmed a single unit, skip step 1.  This process t
     - A list of valid OIDs this sensor will respond to can be found [here](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/OIDINFO.md)
     - Paessler (PRTG) produce a great freely-downloadable SNMP tester for Windows, available [here](https://www.paessler.com/tools/snmptester)
 
-## Other Info
+## Technical Information
+- Operating specifications
+  - Operating temperature: 32°F (0°C) to 127°F (53°C)
+  - Operating humidity: 5% to 90% (RH), non-condensing
 - For those interested in the I/O configuration of the M5Stack PoESP32 device, port info is [here](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/PORTINFO.md)
