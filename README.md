@@ -51,4 +51,5 @@ _Once you've successfully programmed a single unit, skip step 1.  This process t
 8. Plug in the ENV IV sensor unit
 9. Connect the PoESP32 to a PoE network port and mount as appropriate
 10. Configure your monitoring platform as appropriate
+    - A list of valid OIDs this sensor will respond to can be found [here](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/OIDINFO.md)
     - Paessler (PRTG) produce a great freely-downloadable SNMP tester for Windows, available [here](https://www.paessler.com/tools/snmptester)
