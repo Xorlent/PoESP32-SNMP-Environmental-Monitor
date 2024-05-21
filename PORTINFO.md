@@ -19,5 +19,5 @@
 ## I2C DEVICES
 ### SHT40 Temp + Humidity
 - Address 0x44  
-### BMP280 Pressure
-- Address 0x76  
+### BMP280 Pressure (not used in this project)
+- Address 0x76
