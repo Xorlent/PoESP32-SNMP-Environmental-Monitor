@@ -23,6 +23,7 @@ Programming time per unit: < 20 minutes
 
 ## Device Capability Comparison
 This project produces a SNMPv1/2 temperature and humidity monitoring device with flashed configuration settings and no remote management capability.  Some would see this as a positive from a security-perspective, but it could prove challenging in network environments where change is constant.  A re-flash/re-programming is required to change any configuration options:
+- Host name
 - Device IP and subnet
 - IP gateway
 - SNMP read community string
@@ -37,7 +38,7 @@ _Once you've successfully programmed a single unit, skip step 1.  This process t
    - You will need a 1.5 mm allen wrench to remove a single screw
    - Inserting a small flat head screwdriver into the slots flanking the Ethernet jack, carefully separate the case halves; work it side by side to avoid damage
 3. In Arduino, open the project file (PoESP32-SNMP-Sensor.ino)
-   - Edit the IP address, subnet, gateway, SNMP read community, and authorized hosts lists at the very top of the file.
+   - Edit the hostname, IP address, subnet, gateway, SNMP read community, and authorized hosts lists at the very top of the file.
 4. With the USB-to-serial adapter unplugged, insert the pins in the correct orientation on the back of the PoESP32 mainboard [PICTURE](https://nada.com)
 > [!IMPORTANT]
 > Do not plug the PoESP32 device into Ethernet until step 9 or you risk damaging your USB port!
