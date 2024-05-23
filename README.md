@@ -55,6 +55,11 @@ _Once you've successfully programmed a single unit, skip step 1.  This process t
     - A list of valid OIDs this sensor will respond to can be found [here](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/OIDINFO.md)
     - Paessler (PRTG) produce a great freely-downloadable SNMP tester for Windows, available [here](https://www.paessler.com/tools/snmptester)
 
+## Guidance and Limitations
+- For monitoring, configure one OID per sensor.  The custom SNMP library will only respond to one OID per request.
+- If you receive a "General Failure" when requesting a valid OID, this means the device is having trouble communicating with the temperature/humidity sensor.
+- For high humidity environments, this device will activate an internal sensor heater under certain conditions to ensure accurate readings.
+
 ## Technical Information
 - Operating specifications
   - Operating temperature: 32°F (0°C) to 127°F (53°C)
