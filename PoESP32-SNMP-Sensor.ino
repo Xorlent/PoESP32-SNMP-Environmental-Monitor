@@ -1,6 +1,6 @@
 ////////------------------------------------------- CONFIGURATION SETTINGS AREA --------------------------------------------////////
 
-const uint8_t HOSTNAME[] = "POESP32-1"; // Set hostname
+const uint8_t HOSTNAME[] = "PoESP32-Unit"; // Set hostname
 
 // Ethernet configuration
 IPAddress ip(192, 168, 1, 99); // Set device IP address.
@@ -15,6 +15,19 @@ const IPAddress AUTHORIZED_HOSTS[2] = {IPAddress(192,168,1,1),IPAddress(192,168,
 //Update the array size here     ^    to reflect the number of authorized hosts you listed.
 const int AUTHORIZED_HOSTS_QTY = 2;
 //Update this number to match    ^    the one above.
+
+/* Valid OIDs (Must query one OID per request):
+### Uptime (0 to 49 days before value wraps)
+1.3.6.1.2.1.1.3.0
+### Hostname
+1.3.6.1.4.1.119.2.1.3.0
+### Temperature (.1 degrees C)
+1.3.6.1.4.1.119.5.1.2.1.5.1
+### Temperature (degrees F)
+1.3.6.1.4.1.119.5.1.2.1.5.2
+### Humidity (%)
+1.3.6.1.4.1.119.5.1.2.1.6.1
+*/
 
 ////////--------------------------------------- DO NOT EDIT ANYTHING BELOW THIS LINE ---------------------------------------////////
 
@@ -47,22 +60,9 @@ static const uint8_t SNMP_GETREQUEST_7_LEN[1] = {0xa0};
 
 uint8_t SNMP_GETREQUEST_DATA0[7] = {0x00,0x00,0x00,0x00,0x00,0x00,0x00}; // ASN.1, length (calc at runtime), ver int, ver len, ver value, community, community len
 uint8_t SNMP_GETREQUEST_DATA1[2] = {0xa2,0x00}; // request_type (0xa2), length (calc at runtime)
-uint8_t SNMP_GETREQUEST_DATA2[12] = {0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00}; // Request ID int, RID length, RID ID[0], RID ID[1], RID ID[2], RID ID[3], err int, err len, err value, index int, index len, index value
+uint8_t SNMP_GETREQUEST_DATA2a[8] = {0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00}; // Request ID int, RID length, RID ID[0], RID ID[1], RID ID[2], RID ID[3], RID ID[4], RID ID[5]
+uint8_t SNMP_GETREQUEST_DATA2b[6] = {0x00,0x00,0x00,0x00,0x00,0x00}; // err int, err len, err value, index int, index len, index value
 uint8_t SNMP_GETREQUEST_DATA3[6] = {0x00,0x00,0x00,0x00,0x00,0x00}; // Varbind list type, Varbind list len, Varbind type, Varbind len, Object ID, Object ID len
-
-// Valid OIDs:
-/*
-### Uptime (0 to 49 days before value wraps)
-1.3.6.1.2.1.1.3.0
-### Hostname
-1.3.6.1.4.1.119.2.1.3.0
-### Temperature (.1 degrees C)
-1.3.6.1.4.1.119.5.1.2.1.5.1
-### Temperature (degrees F)
-1.3.6.1.4.1.119.5.1.2.1.5.2
-### Humidity (%)
-1.3.6.1.4.1.119.5.1.2.1.6.1
-*/
 
 static const uint8_t SNMP_GETUPTIME[10] = {0x2b,0x06,0x01,0x02,0x01,0x01,0x03,0x00,0x05,0x00};
 static const uint8_t SNMP_GETHOST[12] = {0x2b,0x06,0x01,0x04,0x01,0x77,0x02,0x01,0x03,0x00,0x05,0x00};
@@ -202,12 +202,22 @@ int parseRequest(uint8_t *payload, size_t length)
                 
                 // Copy portions of the caller's request info into buffers for us to then send back in the response.
                 memcpy(SNMP_GETREQUEST_DATA0,payload,7);
-                memcpy(SNMP_GETREQUEST_DATA2,payload+9+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,12);
-                memcpy(SNMP_GETREQUEST_DATA3,payload+9+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+12,6);
+                uint8_t RIDLength = payload[9+sizeof(SNMP_READCOMMUNITY_VALUE_7)]; // Retrieve the Request ID value length
+                memcpy(SNMP_GETREQUEST_DATA2a,payload+9+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,RIDLength+2); // Get the Request ID info
+                memcpy(SNMP_GETREQUEST_DATA2b,payload+9+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength+2,6); // Get the Error info
+                memcpy(SNMP_GETREQUEST_DATA3,payload+9+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength+2+6,6); // Get Varbind and Object info
 
                 // We finished processing a valid uptime request packet.  Return 0 to the caller.
                 if(memcmp(SNMP_GETUPTIME,payload+length-sizeof(SNMP_GETUPTIME),sizeof(SNMP_GETUPTIME)) == 0)
                 {
+                  /*
+                  Serial.println();
+                  for(int idx = 0; idx < length; idx++)
+                  {
+                    Serial.printf("%02x",payload[idx]);
+                  }
+                  Serial.println();
+                  */
                   return 0;
                 }
                 // We finished processing a valid hostname request packet.  Return 1 to the caller.
@@ -249,7 +259,7 @@ int parseRequest(uint8_t *payload, size_t length)
     return -1; // Unsupported/unknown request
   }
   blocking = false;
-  return -1; // Currently blocked processing a request.  We'll ignore this one and wait for a following request to come in.
+  return -1; // Currently blocked processing a request.  We'll ignore this one and wait for the following request to come in.
 }
 
 // Build and send response to valid getRequest
@@ -265,10 +275,10 @@ void sendGetResponse(int request, IPAddress caller, uint16_t port)
     if(request > 1) // The request was for sensor data
     {
       // Add error to getResponse message
-      SNMP_GETREQUEST_DATA2[8] = 0x05;
+      SNMP_GETREQUEST_DATA2b[2] = 0x05;
     }
   }
-
+  uint8_t RIDLength = SNMP_GETREQUEST_DATA2a[1];
   switch(request)
   {
     case 0 : // Return uptime
@@ -280,7 +290,7 @@ void sendGetResponse(int request, IPAddress caller, uint16_t port)
       value[1] = (val >> 16) & 0xFF;
       value[2] = (val >> 8) & 0xFF;
       value[3] = val & 0xFF;
-      uint8_t PDULen = 28 + 4; // getResponse PDU length plus 4 byte value
+      uint8_t PDULen = 24 + RIDLength + 4; // getResponse PDU length plus 4 byte value
       SNMP_GETREQUEST_DATA1[1] = PDULen;
       SNMP_GETREQUEST_DATA3[1] = SNMP_GETREQUEST_DATA3[1] + 4; // Add four bytes to the varbind list to accommodate the 32 bit value being returned
       SNMP_GETREQUEST_DATA3[3] = SNMP_GETREQUEST_DATA3[3] + 4; // Add four bytes to the varbind item to accommodate the 32 bit value being returned
@@ -291,19 +301,28 @@ void sendGetResponse(int request, IPAddress caller, uint16_t port)
       memcpy(responsePayload,SNMP_GETREQUEST_DATA0,7);
       memcpy(responsePayload+7,SNMP_READCOMMUNITY_VALUE_7,sizeof(SNMP_READCOMMUNITY_VALUE_7)-1);
       memcpy(responsePayload+7+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,SNMP_GETREQUEST_DATA1,2);
-      memcpy(responsePayload+9+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,SNMP_GETREQUEST_DATA2,12);
-      memcpy(responsePayload+21+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,SNMP_GETREQUEST_DATA3,6);
-      memcpy(responsePayload+27+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,SNMP_GETUPTIME,8);
-      memcpy(responsePayload+35+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,dataType,2);
-      memcpy(responsePayload+37+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,value,4);
+      memcpy(responsePayload+9+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,SNMP_GETREQUEST_DATA2a,RIDLength+2); // Ger the Request ID info
+      memcpy(responsePayload+9+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength+2,SNMP_GETREQUEST_DATA2b,6); // Get the Error info
+      memcpy(responsePayload+17+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength,SNMP_GETREQUEST_DATA3,6);
+      memcpy(responsePayload+23+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength,SNMP_GETUPTIME,8);
+      memcpy(responsePayload+31+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength,dataType,2);
+      memcpy(responsePayload+33+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength,value,4);
       udp.writeTo(responsePayload,responseBytes,caller,port);
-      Serial.println();        
+      Serial.println();
+      /*
+      for(int idx = 0; idx < responseBytes; idx++)
+        {
+          Serial.printf("%02x",responsePayload[idx]);
+          Serial.print(" ");
+        }
+      Serial.println();
+      */
       break;
     }
     case 1 : // Return hostname
     {
       uint8_t dataType[2] = {0x04,HOSTNAME_LEN}; // String, length of HOSTNAME
-      uint8_t PDULen = 30 + HOSTNAME_LEN; // getResponse PDU length plus length of HOSTNAME
+      uint8_t PDULen = 26 + RIDLength + HOSTNAME_LEN; // getResponse PDU length plus length of Request ID plus HOSTNAME
       SNMP_GETREQUEST_DATA1[1] = PDULen;
       SNMP_GETREQUEST_DATA3[1] = SNMP_GETREQUEST_DATA3[1] + HOSTNAME_LEN; // Add bytes to the varbind list to accommodate the hostname value being returned
       SNMP_GETREQUEST_DATA3[3] = SNMP_GETREQUEST_DATA3[3] + HOSTNAME_LEN; // Add bytes to the varbind item to accommodate the hostname value being returned
@@ -314,19 +333,13 @@ void sendGetResponse(int request, IPAddress caller, uint16_t port)
       memcpy(responsePayload,SNMP_GETREQUEST_DATA0,7);
       memcpy(responsePayload+7,SNMP_READCOMMUNITY_VALUE_7,sizeof(SNMP_READCOMMUNITY_VALUE_7)-1);
       memcpy(responsePayload+7+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,SNMP_GETREQUEST_DATA1,2);
-      memcpy(responsePayload+9+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,SNMP_GETREQUEST_DATA2,12);
-      memcpy(responsePayload+21+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,SNMP_GETREQUEST_DATA3,6);
-      memcpy(responsePayload+27+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,SNMP_GETHOST,10);
-      memcpy(responsePayload+37+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,dataType,2);
-      memcpy(responsePayload+39+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,HOSTNAME,HOSTNAME_LEN);
+      memcpy(responsePayload+9+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,SNMP_GETREQUEST_DATA2a,RIDLength+2); // Get the Request ID info
+      memcpy(responsePayload+9+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength+2,SNMP_GETREQUEST_DATA2b,6); // Get the Error info
+      memcpy(responsePayload+17+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength,SNMP_GETREQUEST_DATA3,6);
+      memcpy(responsePayload+23+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength,SNMP_GETHOST,10);
+      memcpy(responsePayload+33+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength,dataType,2);
+      memcpy(responsePayload+35+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength,HOSTNAME,HOSTNAME_LEN);
       udp.writeTo(responsePayload,responseBytes,caller,port);
-      Serial.println();   
-
-      for(int idx = 0; idx < responseBytes; idx++)
-        {
-          Serial.printf("%02x",responsePayload[idx]);
-          Serial.print(" ");
-        }
       Serial.println();
       break;
     }
@@ -336,7 +349,7 @@ void sendGetResponse(int request, IPAddress caller, uint16_t port)
       uint8_t value[2];
       value[0] = (cTemp >> 8) & 0xFF;
       value[1] = cTemp & 0xFF;
-      uint8_t PDULen = 32 + 2; // getResponse PDU length plus two bytes
+      uint8_t PDULen = 28 + RIDLength + 2; // getResponse PDU length plus two bytes
       SNMP_GETREQUEST_DATA1[1] = PDULen;
       SNMP_GETREQUEST_DATA3[1] = SNMP_GETREQUEST_DATA3[1] + 2; // Add byte to the varbind list to accommodate the .1 degrees C value being returned
       SNMP_GETREQUEST_DATA3[3] = SNMP_GETREQUEST_DATA3[3] + 2; // Add byte to the varbind item to accommodate the .1 degrees C value being returned
@@ -347,11 +360,12 @@ void sendGetResponse(int request, IPAddress caller, uint16_t port)
       memcpy(responsePayload,SNMP_GETREQUEST_DATA0,7);
       memcpy(responsePayload+7,SNMP_READCOMMUNITY_VALUE_7,sizeof(SNMP_READCOMMUNITY_VALUE_7)-1);
       memcpy(responsePayload+7+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,SNMP_GETREQUEST_DATA1,2);
-      memcpy(responsePayload+9+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,SNMP_GETREQUEST_DATA2,12);
-      memcpy(responsePayload+21+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,SNMP_GETREQUEST_DATA3,6);
-      memcpy(responsePayload+27+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,SNMP_GETTEMPC,12);
-      memcpy(responsePayload+39+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,dataType,2);
-      memcpy(responsePayload+41+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,value,2);
+      memcpy(responsePayload+9+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,SNMP_GETREQUEST_DATA2a,RIDLength+2); // Ger the Request ID info
+      memcpy(responsePayload+9+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength+2,SNMP_GETREQUEST_DATA2b,6); // Get the Error info
+      memcpy(responsePayload+17+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength,SNMP_GETREQUEST_DATA3,6);
+      memcpy(responsePayload+23+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength,SNMP_GETTEMPC,12);
+      memcpy(responsePayload+35+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength,dataType,2);
+      memcpy(responsePayload+37+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength,value,2);
       udp.writeTo(responsePayload,responseBytes,caller,port);
       Serial.println();
       break;
@@ -359,7 +373,7 @@ void sendGetResponse(int request, IPAddress caller, uint16_t port)
     case 3 : // Return degrees F
     {
       uint8_t dataType[2] = {0x02,0x01}; // Integer, 1 byte
-      uint8_t PDULen = 32 + 1; // getResponse PDU length plus one byte
+      uint8_t PDULen = 28 + RIDLength + 1; // getResponse PDU length plus one byte
       SNMP_GETREQUEST_DATA1[1] = PDULen;
       SNMP_GETREQUEST_DATA3[1] = SNMP_GETREQUEST_DATA3[1] + 1; // Add byte to the varbind list to accommodate the degrees F value being returned
       SNMP_GETREQUEST_DATA3[3] = SNMP_GETREQUEST_DATA3[3] + 1; // Add byte to the varbind item to accommodate the degrees F value being returned
@@ -370,11 +384,12 @@ void sendGetResponse(int request, IPAddress caller, uint16_t port)
       memcpy(responsePayload,SNMP_GETREQUEST_DATA0,7);
       memcpy(responsePayload+7,SNMP_READCOMMUNITY_VALUE_7,sizeof(SNMP_READCOMMUNITY_VALUE_7)-1);
       memcpy(responsePayload+7+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,SNMP_GETREQUEST_DATA1,2);
-      memcpy(responsePayload+9+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,SNMP_GETREQUEST_DATA2,12);
-      memcpy(responsePayload+21+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,SNMP_GETREQUEST_DATA3,6);
-      memcpy(responsePayload+27+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,SNMP_GETTEMPF,12);
-      memcpy(responsePayload+39+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,dataType,2);
-      responsePayload[41+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1] = fTemp;
+      memcpy(responsePayload+9+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,SNMP_GETREQUEST_DATA2a,RIDLength+2); // Ger the Request ID info
+      memcpy(responsePayload+9+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength+2,SNMP_GETREQUEST_DATA2b,6); // Get the Error info
+      memcpy(responsePayload+17+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength,SNMP_GETREQUEST_DATA3,6);
+      memcpy(responsePayload+23+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength,SNMP_GETTEMPF,12);
+      memcpy(responsePayload+35+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength,dataType,2);
+      responsePayload[37+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength] = fTemp;
       udp.writeTo(responsePayload,responseBytes,caller,port);
       Serial.println();
       break;
@@ -382,7 +397,7 @@ void sendGetResponse(int request, IPAddress caller, uint16_t port)
     case 4 : // Return humidity
     {
       uint8_t dataType[2] = {0x02,0x01}; // Integer, 1 byte
-      uint8_t PDULen = 32 + 1; // getResponse PDU length plus one byte
+      uint8_t PDULen = 28 + RIDLength + 1; // getResponse PDU length plus one byte
       SNMP_GETREQUEST_DATA1[1] = PDULen;
       SNMP_GETREQUEST_DATA3[1] = SNMP_GETREQUEST_DATA3[1] + 1; // Add byte to the varbind list to accommodate the RH% value being returned
       SNMP_GETREQUEST_DATA3[3] = SNMP_GETREQUEST_DATA3[3] + 1; // Add byte to the varbind item to accommodate the RH% value being returned
@@ -393,11 +408,12 @@ void sendGetResponse(int request, IPAddress caller, uint16_t port)
       memcpy(responsePayload,SNMP_GETREQUEST_DATA0,7);
       memcpy(responsePayload+7,SNMP_READCOMMUNITY_VALUE_7,sizeof(SNMP_READCOMMUNITY_VALUE_7)-1);
       memcpy(responsePayload+7+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,SNMP_GETREQUEST_DATA1,2);
-      memcpy(responsePayload+9+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,SNMP_GETREQUEST_DATA2,12);
-      memcpy(responsePayload+21+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,SNMP_GETREQUEST_DATA3,6);
-      memcpy(responsePayload+27+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,SNMP_GETHUMIDITY,12);
-      memcpy(responsePayload+39+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,dataType,2);
-      responsePayload[41+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1] = pHumidity;
+      memcpy(responsePayload+9+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,SNMP_GETREQUEST_DATA2a,RIDLength+2); // Ger the Request ID info
+      memcpy(responsePayload+9+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength+2,SNMP_GETREQUEST_DATA2b,6); // Get the Error info
+      memcpy(responsePayload+17+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength,SNMP_GETREQUEST_DATA3,6);
+      memcpy(responsePayload+23+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength,SNMP_GETHUMIDITY,12);
+      memcpy(responsePayload+35+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength,dataType,2);
+      responsePayload[37+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength] = pHumidity;
       udp.writeTo(responsePayload,responseBytes,caller,port);
       Serial.println();
       break;
@@ -454,6 +470,7 @@ void setup() {
           Serial.print(packet.remoteIP());
           Serial.print(":");
           Serial.print(packet.remotePort());
+          Serial.println();
 
           switch (parseRequest(packet.data(),packet.length()))
           {
