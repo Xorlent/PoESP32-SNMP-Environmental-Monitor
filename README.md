@@ -22,7 +22,7 @@ Programming time per unit: < 20 minutes
 - $295: Room Alert 3S
 
 ## Device Capability Comparison
-This project produces a SNMPv1/2c temperature and humidity monitoring device with flashed configuration settings and no remote management capability.  Some would see this as a positive from a security-perspective, but it could prove challenging in network environments where change is constant.  A re-flash/re-programming is required to change any configuration options:
+This project produces a SNMPv1/2c temperature and humidity monitoring device with flashed configuration settings and no remote management capability.  Some would see this as a positive from a security-perspective, but it could prove challenging in network environments where change is constant.  A re-flash/re-programming is required to modify any configuration options:
 - Host name
 - Device IP and subnet
 - IP gateway
