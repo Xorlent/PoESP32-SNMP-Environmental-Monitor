@@ -61,6 +61,7 @@ _Once you've successfully programmed a single unit, skip step 1.  Repeating this
 - If you receive a "General Failure" when requesting a valid OID, this means the device is having trouble communicating with the temperature/humidity sensor.
 - If you request an invalid OID, expect no response.  The device will not process packets for requests that are not authorized or a match for valid OIDs.
 - For high humidity environments, this device will activate an internal sensor heater under certain conditions to ensure accurate readings.
+- The device will respond to pings from any IP address within the routable network.
 
 ## Technical Information
 - Operating specifications
