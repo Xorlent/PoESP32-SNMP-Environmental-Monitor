@@ -68,4 +68,6 @@ _Once you've successfully programmed a single unit, skip step 1.  Repeating this
 - Operating specifications
   - Operating temperature: 0°F (-18°C) to 127°F (53°C)
   - Operating humidity: 5% to 90% (RH), non-condensing
+- Ethernet
+  - 10/100 Mbit twisted pair copper
 - For those interested in the I/O configuration of the M5Stack PoESP32 device, port info is [here](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/PORTINFO.md)
