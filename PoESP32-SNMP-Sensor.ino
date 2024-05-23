@@ -29,6 +29,11 @@ const int AUTHORIZED_HOSTS_QTY = 2;
 1.3.6.1.4.1.119.5.1.2.1.6.1
 */
 
+/*
+To-do
+convert millis call to use int64_t esp_timer_get_time(void)
+*/
+
 ////////--------------------------------------- DO NOT EDIT ANYTHING BELOW THIS LINE ---------------------------------------////////
 
 #include <ETH.h>
