@@ -56,7 +56,7 @@ _Once you've successfully programmed a single unit, skip step 1.  This process t
     - Paessler (PRTG) produce a great freely-downloadable SNMP tester for Windows, available [here](https://www.paessler.com/tools/snmptester)
 
 ## Guidance and Limitations
-- For monitoring, configure one OID per sensor.  The custom SNMP library will only respond to one OID per request.
+- For monitoring, configure one OID per sensor.  This custom SNMP parser will only respond to one OID per request.
 - If you receive a "General Failure" when requesting a valid OID, this means the device is having trouble communicating with the temperature/humidity sensor.
 - For high humidity environments, this device will activate an internal sensor heater under certain conditions to ensure accurate readings.
 
