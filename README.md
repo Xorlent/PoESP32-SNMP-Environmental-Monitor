@@ -73,4 +73,5 @@ _Once you've successfully programmed a single unit, skip step 1.  Repeating this
 - Ethernet
   - 10/100 Mbit twisted pair copper
   - IEEE 802.3af Power-over-Ethernet
-- For those interested in the I/O configuration of the M5Stack PoESP32 device, port info is [here](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/PORTINFO.md)
+- I/O Configuration
+  - [PORTINFO.md](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/PORTINFO.md)
