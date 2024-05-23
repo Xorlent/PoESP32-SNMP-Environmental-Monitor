@@ -47,7 +47,7 @@ _Once you've successfully programmed a single unit, skip step 1.  Repeating this
    - The device is now in bootloader mode
 6. In Arduino
    - Select Tools->Port and select the USB-to-serial adapter
-     - If you're unsure, unplug the USB-to-serial adapter, look at the port list, then plug it back in and select the new entry (repeating step 3)
+     - If you're unsure, unplug the USB-to-serial adapter, look at the port list, then plug it back in and select the new entry (repeating step 5)
    - Select Sketch->Upload to flash the device
 7. Disconnect the USB-to-serial adapter and reassemble the case
 8. Plug in the ENV IV sensor unit
@@ -59,6 +59,7 @@ _Once you've successfully programmed a single unit, skip step 1.  Repeating this
 ## Guidance and Limitations
 - For monitoring, configure one OID per sensor.  This custom SNMP parser will only respond to one OID per request.
 - If you receive a "General Failure" when requesting a valid OID, this means the device is having trouble communicating with the temperature/humidity sensor.
+- If you request an invalid OID, expect no response.  The device will not process packets for requests that are not authorized or a match for valid OIDs.
 - For high humidity environments, this device will activate an internal sensor heater under certain conditions to ensure accurate readings.
 
 ## Technical Information
