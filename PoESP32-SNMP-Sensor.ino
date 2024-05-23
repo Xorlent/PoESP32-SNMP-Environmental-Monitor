@@ -17,7 +17,7 @@ const int AUTHORIZED_HOSTS_QTY = 2;
 //Update this number to match    ^    the one above.
 
 /* Valid OIDs (Must query one OID per request):
-### Uptime (0 to 49 days before value wraps)
+### Uptime
 1.3.6.1.2.1.1.3.0
 ### Hostname
 1.3.6.1.4.1.119.2.1.3.0
@@ -27,11 +27,6 @@ const int AUTHORIZED_HOSTS_QTY = 2;
 1.3.6.1.4.1.119.5.1.2.1.5.2
 ### Humidity (%)
 1.3.6.1.4.1.119.5.1.2.1.6.1
-*/
-
-/*
-To-do
-convert millis call to use int64_t esp_timer_get_time(void)
 */
 
 ////////--------------------------------------- DO NOT EDIT ANYTHING BELOW THIS LINE ---------------------------------------////////
@@ -281,7 +276,8 @@ void sendGetResponse(int request, IPAddress caller, uint16_t port)
     case 0 : // Return uptime
     {
       uint8_t dataType[2] = {0x43,0x04}; // Timetick, uint32
-      uint32_t val = millis()/10; // Uptime (will wrap every 49 days)
+      int64_t microval = esp_timer_get_time()/10000; // Convert micros to 1/100ths of a second
+      uint32_t val = static_cast<uint32>(microval & 0x0FFFFFFFF); // Uptime
       uint8_t value[4];
       value[0] = (val >> 24) & 0xFF;
       value[1] = (val >> 16) & 0xFF;
