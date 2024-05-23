@@ -210,14 +210,6 @@ int parseRequest(uint8_t *payload, size_t length)
                 // We finished processing a valid uptime request packet.  Return 0 to the caller.
                 if(memcmp(SNMP_GETUPTIME,payload+length-sizeof(SNMP_GETUPTIME),sizeof(SNMP_GETUPTIME)) == 0)
                 {
-                  /*
-                  Serial.println();
-                  for(int idx = 0; idx < length; idx++)
-                  {
-                    Serial.printf("%02x",payload[idx]);
-                  }
-                  Serial.println();
-                  */
                   return 0;
                 }
                 // We finished processing a valid hostname request packet.  Return 1 to the caller.
@@ -309,14 +301,6 @@ void sendGetResponse(int request, IPAddress caller, uint16_t port)
       memcpy(responsePayload+33+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength,value,4);
       udp.writeTo(responsePayload,responseBytes,caller,port);
       Serial.println();
-      /*
-      for(int idx = 0; idx < responseBytes; idx++)
-        {
-          Serial.printf("%02x",responsePayload[idx]);
-          Serial.print(" ");
-        }
-      Serial.println();
-      */
       break;
     }
     case 1 : // Return hostname
