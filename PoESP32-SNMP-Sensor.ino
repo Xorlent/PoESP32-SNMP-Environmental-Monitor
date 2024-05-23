@@ -12,7 +12,7 @@ const uint8_t SNMP_READCOMMUNITY_VALUE_7[] = "readonly"; // Set SNMP read commun
 
 //The AUTHORIZED_HOSTS list should include the IP of any hosts that may query this device via SNMP.
 const IPAddress AUTHORIZED_HOSTS[2] = {IPAddress(192,168,1,1),IPAddress(192,168,1,10)};
-//Update the array size here     ^    to reflect the number of authorized hosts you listed.
+//Update the array size here     ^    to reflect the number of authorized host IPAddress entries you listed.
 const int AUTHORIZED_HOSTS_QTY = 2;
 //Update this number to match    ^    the one above.
 
