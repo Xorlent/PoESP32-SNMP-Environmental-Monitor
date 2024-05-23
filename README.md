@@ -39,7 +39,7 @@ _Once you've successfully programmed a single unit, skip step 1.  This process t
    - Inserting a small flat head screwdriver into the slots flanking the Ethernet jack, carefully separate the case halves; work it side by side to avoid damage
 3. In Arduino, open the project file (PoESP32-SNMP-Sensor.ino)
    - Edit the hostname, IP address, subnet, gateway, SNMP read community, and authorized hosts lists at the very top of the file.
-4. With the USB-to-serial adapter unplugged, insert the pins in the correct orientation on the back of the PoESP32 mainboard [PICTURE](https://nada.com)
+4. With the USB-to-serial adapter unplugged, insert the pins in the correct orientation on the back of the PoESP32 mainboard _PICTURE COMING SOON..._
 > [!IMPORTANT]
 > Do not plug the PoESP32 device into Ethernet until step 9 or you risk damaging your USB port!
 5. With light tension applied to ensure good connectivity to the programming through-hole vias on the PoESP32, plug in the USB-to-serial adapter
