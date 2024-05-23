@@ -6,7 +6,7 @@ With Vertiv unceremoniously stop-shipping and then discontinuing [Geist Watchdog
 ## Requiremements
 1. M5Stack [PoESP32 device](https://shop.m5stack.com/products/esp32-ethernet-unit-with-poe), currently $25.90 USD
 2. M5Stack [ENV IV sensor unit](https://shop.m5stack.com/products/env-iv-unit-with-temperature-humidity-air-pressure-sensor-sht40-bmp280), currently $5.95 USD
-3. A single USB-to-serial device or the [M5Stack ESP32 Downloader kit](https://shop.m5stack.com/products/esp32-downloader-kit), currently $9.95 USD
+3. A single [M5Stack ESP32 Downloader kit](https://shop.m5stack.com/products/esp32-downloader-kit), currently $9.95 USD
 
 ## Cost Analysis
 One-time cost for a USB-to-serial device: $9.95 plus tax and shipping  
