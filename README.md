@@ -61,7 +61,6 @@ _Once you've successfully programmed a single unit, skip step 1.  Repeating this
 - For monitoring, configure one OID per sensor.  This custom SNMP parser will only respond to one OID per request.
 - If you receive a "General Failure" when requesting a valid OID, this means the device is having trouble communicating with the temperature/humidity sensor.
 - If you request an invalid OID, expect no response.  The device will not process packets for requests that are not authorized or not a match for a valid OID.
-- The device uptime value will roll over every 49 days, as it is currently derived from millis().  I may later switch this to use the ESP32 64-bit microsecond timer.
 - For high humidity environments, this device will activate an internal sensor heater under certain conditions to ensure accurate readings.
 - The device will respond to pings from any IP address within the routable network.
 
