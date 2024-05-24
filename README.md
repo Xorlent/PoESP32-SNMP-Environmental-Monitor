@@ -75,4 +75,5 @@ _Once you've successfully programmed a single unit, skip step 1.  Repeating this
   - 10/100 Mbit twisted pair copper
   - IEEE 802.3af Power-over-Ethernet
 - I/O Configuration
+  - SHT40 temperature and humidity sensor
   - See [PORTINFO.md](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/PORTINFO.md)
