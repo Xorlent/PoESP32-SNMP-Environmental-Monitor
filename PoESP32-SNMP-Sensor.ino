@@ -277,7 +277,7 @@ void sendGetResponse(int request, IPAddress caller, uint16_t port)
     {
       uint8_t dataType[2] = {0x43,0x04}; // Timetick, uint32
       int64_t microval = esp_timer_get_time()/10000; // Convert micros to 1/100ths of a second
-      uint32_t val = static_cast<uint32>(microval & 0x0FFFFFFFF); // Uptime
+      uint32_t val = static_cast<uint32_t>(microval & 0x0FFFFFFFF); // Uptime
       uint8_t value[4];
       value[0] = (val >> 24) & 0xFF;
       value[1] = (val >> 16) & 0xFF;
