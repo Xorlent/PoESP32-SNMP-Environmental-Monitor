@@ -101,11 +101,11 @@ int16_t cTemp = 0;
 bool sample(void *);
 // Celcius to farenheit conversion
 int ctof(float x);
-// Verified authorized caller by checking request IP
+// Verifies authorized caller by checking request IP
 bool authRequest(IPAddress callerIP);
 // Parses incoming SNMP messages received from valid authorized IP addresses
 int parseRequest(uint8_t *payload, size_t length);
-// Construct and send the response message for valid OID getRequests
+// Constructs and sends the response message for valid OID getRequests
 void sendGetResponse(int request, IPAddress caller, uint16_t port);
 
 ////////---------------------------------------     End function declarations      ---------------------------------------////////
