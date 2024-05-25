@@ -241,17 +241,21 @@ int parseRequest(uint8_t *payload, size_t length)
                 }
                 Serial.println();
                 Serial.println();
+                return -1; // Unsupported/unknown request
               }
+              return -1; // Unsupported/unknown request
             }
+            return -1; // Unsupported/unknown request
           }
+          return -1; // Unsupported/unknown request
         }
+        return -1; // Unsupported/unknown request
       }
+      return -1; // Unsupported/unknown request
     }
-    blocking = false;
     return -1; // Unsupported/unknown request
   }
-  blocking = false;
-  return -1; // Currently blocked processing a request.  We'll ignore this one and wait for the following request to come in.
+  return -1; // Currently blocked processing a request.  We'll ignore this one, release the blocking flag, and wait for the following request to come in.
 }
 
 // Build and send response to valid getRequest
@@ -488,6 +492,7 @@ void setup() {
             break;
             default : // Return error
               Serial.print("-1 returned from parser.  Ignore caller.");
+              blocking = false;
             break;
           }
         }
