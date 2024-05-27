@@ -68,6 +68,8 @@ _Once you've successfully programmed a single unit, skip step 1.  Repeating this
 - Operating specifications
   - Operating temperature: 0°F (-18°C) to 127°F (53°C)
   - Operating humidity: 5% to 90% (RH), non-condensing
+- Sensor Accuracy
+  - ±0.1 °C，±1.5 %RH
 - Power
   - 6W maximum
 - Ethernet
