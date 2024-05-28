@@ -35,23 +35,22 @@ __Bottom line: If you need SNMPv3 or desire web management and/or SNMP write fun
 _Once you've successfully programmed a single unit, skip step 1.  Repeating this process takes less than 10 minutes from start to finish_
 1. [Set up your Arduino programming environment](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/ARDUINO-SETUP.md)
 2. Disassemble the PoESP32 case
-   - You will need a 1.5 mm allen wrench to remove a single screw
-   - Inserting a small flat head screwdriver into the slots flanking the Ethernet jack, carefully separate the case halves; work it side by side to avoid damage
+   - You will need a 1.5 mm allen wrench to remove a single screw [pic](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/images/1-Allen.jpg)
+   - Inserting a small flat head screwdriver into the slots flanking the Ethernet jack [pic](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/images/2-Slots.jpg), carefully separate the case halves; work it side by side to avoid damage [pic](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/images/3-Tabs.jpg)
 3. In Arduino, open the project file (PoESP32-SNMP-Sensor.ino)
    - Edit the hostname, IP address, subnet, gateway, SNMP read community, and authorized hosts lists at the very top of the file.
    - Select Tools->Board->esp32 and select "ESP32 Dev Module"
-4. With the USB-to-serial adapter unplugged, insert the pins in the correct orientation on the back of the PoESP32 mainboard
-   - _PICTURE COMING SOON..._
+4. With the USB-to-serial adapter unplugged, insert the pins in the correct orientation on the back of the PoESP32 mainboard [pic](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/images/4-Programmer.jpg)
 > [!IMPORTANT]
 > Do not plug the PoESP32 device into Ethernet until step 9 or you risk damaging your USB port!
-5. With light tension applied to ensure good connectivity to the programming through-hole vias on the PoESP32, plug in the USB-to-serial adapter
+5. With light tension applied to ensure good connectivity to the programming through-hole vias on the PoESP32 (see step 4 pic), plug in the USB-to-serial adapter
    - The device is now in bootloader mode
 6. In Arduino
    - Select Tools->Port and select the USB-to-serial adapter
      - If you're unsure, unplug the USB-to-serial adapter, look at the port list, then plug it back in and select the new entry (repeating step 5)
    - Select Sketch->Upload to flash the device
 7. Disconnect the USB-to-serial adapter and reassemble the case
-8. Plug in the ENV IV sensor unit
+8. Plug in the ENV IV sensor unit [pic](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/images/5-Assembled.jpg)
 9. Connect the PoESP32 to a PoE network port and mount as appropriate
 10. Configure your monitoring platform as appropriate
     - A list of valid OIDs this sensor will respond to can be found [here](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/OIDINFO.md)
