@@ -12,3 +12,5 @@
      - Install version 1.1.0
    - Type "arduino-timer" in the earch field and select "arduino-timer"
      - Install version 3.0.1
+7. Install the CH9102 USB-to-serial drivers ([Windows](https://learn.adafruit.com/how-to-install-drivers-for-wch-usb-to-serial-chips-ch9102f-ch9102/windows-driver-installation)/[MacOS](https://learn.adafruit.com/how-to-install-drivers-for-wch-usb-to-serial-chips-ch9102f-ch9102/mac-driver-installation))
+   - Note: These drivers do not appear to work on MacOS 14.5
