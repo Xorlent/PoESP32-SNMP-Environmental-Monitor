@@ -436,7 +436,7 @@ void setup() {
   // Initialize Ethernet
   ETH.begin(ETH_ADDR, ETH_POWER_PIN, ETH_PHY_MDC, ETH_PHY_MDIO, ETH_TYPE);
   ETH.config(ip, gateway, subnet);
-  while(!ETH.linkUp()
+  while(!ETH.linkUp())
     {
       delay(1000);
     }
