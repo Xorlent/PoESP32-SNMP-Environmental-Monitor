@@ -1,3 +1,9 @@
+/*
+GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
+https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor
+
+Libraries and supporting code incorporates other licenses, see https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/LICENSE-3RD-PARTY.md
+*/
 ////////------------------------------------------- CONFIGURATION SETTINGS AREA --------------------------------------------////////
 
 const uint8_t HOSTNAME[] = "PoESP32-Unit"; // Set hostname
