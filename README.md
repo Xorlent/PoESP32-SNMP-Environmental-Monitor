@@ -14,7 +14,7 @@ Total cost per unit: $31.85 plus tax and shipping
 Programming time per unit: < 20 minutes  
 
 ## Device Cost Comparison (temperature/humidity only)
-- $32: PoESP32-based device
+- $32: this PoESP32-based device
 - $220 before stop-ship: Vertiv Watchdog 15P (discontinued)
 - $190 on sale: AKCP sensorProbe1+ Pro
 - $315: NTI E-MICRO-TRHP
