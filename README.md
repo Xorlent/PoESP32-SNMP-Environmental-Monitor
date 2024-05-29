@@ -64,13 +64,13 @@ _Once you've successfully programmed a single unit, skip step 1.  Repeating this
 - The device will respond to pings from any IP address within the routable network.
 
 ## Technical Information
-- Operating specifications
+- Operating Specifications
   - Operating temperature: 0°F (-18°C) to 127°F (53°C)
   - Operating humidity: 5% to 90% (RH), non-condensing
 - Sensor Accuracy
   - ±0.1 °C，±1.5 %RH
-- Power
-  - 6W maximum
+- Power Consumption
+  - 6W maximum via 802.3af Power-over-Ethernet
 - Ethernet
   - IP101G PHY
   - 10/100 Mbit twisted pair copper
