@@ -42,7 +42,7 @@ _Once you've successfully programmed a single unit, skip step 1.  Repeating this
    - Select Tools->Board->esp32 and select "ESP32 Dev Module"
 4. With the USB-to-serial adapter unplugged, insert the pins in the correct orientation on the back of the PoESP32 mainboard [pic](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/images/4-Programmer.jpg)
 > [!IMPORTANT]
-> Do not plug the PoESP32 device into Ethernet until step 9 or you risk damaging your USB port!
+> Do not plug the PoESP32 device into Ethernet until after step 7 or you risk damaging your USB port!
 5. With light tension applied to ensure good connectivity to the programming through-hole vias on the PoESP32 (see step 4 pic), plug in the USB-to-serial adapter
    - The device is now in bootloader mode
 6. In Arduino
