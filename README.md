@@ -63,6 +63,7 @@ _Once you've successfully programmed a single unit, skip step 1.  Repeating this
 - If you request an invalid OID, expect no response.  The device will not process packets for requests that are not authorized or not a match for a valid OID.
 - For high humidity environments, this device will activate an internal sensor heater under certain conditions to ensure more accurate readings.
 - The device will respond to pings from any IP address within the routable network.
+- Don't have PoE ports on your network switch?  No problem: https://www.amazon.com/gp/product/B0C239DGJF
 
 ## Technical Information
 - Operating Specifications
