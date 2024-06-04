@@ -56,6 +56,7 @@ _Once you've successfully programmed a single unit, skip step 1.  Repeating this
 10. Configure your monitoring platform as appropriate
     - A list of valid OIDs this sensor will respond to can be found [here](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/OIDINFO.md)
     - Paessler (PRTG) produce a great freely-downloadable SNMP tester for Windows, available [here](https://www.paessler.com/tools/snmptester)
+    - If you have PRTG, pre-configured device templates are available for this project at https://github.com/Xorlent/PRTG-OIDLIBS
 
 ## Guidance and Limitations
 - For monitoring, configure one OID per sensor.  This custom SNMP parser will only respond to one OID per request.
