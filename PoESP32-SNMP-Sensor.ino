@@ -134,7 +134,7 @@ bool sample(void *)
       Serial.print("Error trying to execute measurement: ");
       errorToString(error, errorMessage, sizeof errorMessage);
       Serial.println(errorMessage);
-      sampleError = true; // Flip sampleArror flag so we are aware we have a problem.
+      sampleError = true; // Flip sampleError flag so we are aware we have a problem.
       return true; // Leave timer enabled even though the sample failed.
     }
 
