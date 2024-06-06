@@ -6,7 +6,7 @@
 4. Close/save the Preferences window
 5. Open the Boards Manager
    - Type "esp32" in the search field and select "esp32 by Espressif Systems" (__NOT "Arduino ESP32 Boards"__)
-     - Install version 2.0.16 (tested) or 2.0.17 (should work based on release notes)
+     - Install version 2.0.17
 6. Open the Libraries Manager
    - Type "sht4x" in the search field and select "Sensirion I2C SHT4x"
      - Install version 1.1.0
