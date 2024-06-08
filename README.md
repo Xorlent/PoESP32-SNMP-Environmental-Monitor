@@ -49,6 +49,14 @@ _Once you've successfully programmed a single unit, skip step 1.  Repeating this
    - Select Tools->Port and select the USB-to-serial adapter
      - If you're unsure, unplug the USB-to-serial adapter, look at the port list, then plug it back in and select the new entry (repeating step 5)
    - Select Sketch->Upload to flash the device
+   - When you see something similar to the following, proceed to step 7
+     ```
+     Writing at 0x000d0502... (100 %)
+     Wrote 790896 bytes (509986 compressed) at 0x00010000 in 8.9 seconds (effective 714.8 kbit/s)...
+     Hash of data verified.
+
+     Leaving...
+     Hard resetting via RTS pin...
 7. Disconnect the USB-to-serial adapter and reassemble the case
 8. Plug in the ENV IV sensor unit [pic](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/images/5-Assembled.jpg)
 9. Connect the PoESP32 to a PoE network port and mount as appropriate
