@@ -38,7 +38,7 @@ _Once you've successfully programmed a single unit, skip step 1.  Repeating this
    - You will need a 1.5mm (M2) allen wrench to remove a single screw [pic](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/images/1-Allen.jpg)
    - Inserting a small flat head screwdriver into the slots flanking the Ethernet jack [pic](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/images/2-Slots.jpg), carefully separate the case halves; work it side by side to avoid damage [pic](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/images/3-Tabs.jpg)
 > [!TIP]
-> If you have nails, it can be quicker to slide a nail between the case halves, starting with the end opposite the Ethernet port and using another nail to pull the retaining tabs back
+> If you have fingernails, it can be quicker to slide a nail between the case halves, starting with the end opposite the Ethernet port and using another nail to pull the retaining tabs back
 3. In Arduino, open the project file (PoESP32-SNMP-Sensor.ino)
    - Edit the hostname, IP address, subnet, gateway, SNMP read community, and authorized hosts lists at the very top of the file.
    - Select Tools->Board->esp32 and select "ESP32 Dev Module"
