@@ -76,7 +76,10 @@ _Once you've successfully programmed a single unit, skip step 1.  Repeating this
 - For high humidity environments, this device will activate an internal sensor heater under certain conditions to ensure more accurate readings.
 - The device will respond to pings from any IP address within the routable network.
 - Don't have PoE ports on your network switch?  No problem: https://www.amazon.com/gp/product/B0C239DGJF
-- Need a simple solution for mounting the PoESP32 and environmental monitor as a unitized assembly?  No problem: [3D print this custom cradle](https://cad.onshape.com/documents/126ed9d0ea20223ee2558e2e/w/aedc9b597b2c80ff98590475/e/01399c276a351d83fbf833ec?renderMode=0&uiState=6667d233658f712438c06de7)
+- Need a simple solution for mounting the PoESP32 and environmental monitor as a unitized assembly?  No problem:
+  1. PoESP32-Environmental-1RU.step : 3D print model for screwing the PoESP32 assembly into a 1U rack space
+  2. PoESP32-Environmental-Mini.step : 3D print model for zip tie mounting (space constrained)
+  3. If you want to modify the models and make your own custom design, [here is the Onshape link](https://cad.onshape.com/documents/126ed9d0ea20223ee2558e2e/w/34238fabfb355e242dfb51a2/e/01399c276a351d83fbf833ec?renderMode=0&uiState=666a48d7d2cb3267aa789d8e)
 
 ## Technical Information
 - Operating Specifications
