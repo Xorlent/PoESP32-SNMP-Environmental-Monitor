@@ -2,8 +2,8 @@
 ### PoESP32-SNMP-Environmental-Mini
 ![PoESP32 Mini Model](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/3Dmodels/PoESP32-Env-Mini.png)
 ### PoESP32-SNMP-Environmental-Mini-Magnetic
-![PoESP32 Mini Magnetic Model](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/3Dmodels/PoESP32-Env-Mini.png)
-![PoESP32 Mini Magnetic Internal View](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/3Dmodels/PoESP32-Env-Mini.png)
+![PoESP32 Mini Magnetic Model](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/3Dmodels/PoESP32-Env-Mini-Magnet.png)
+![PoESP32 Mini Magnetic Internal View](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/3Dmodels/PoESP32-Env-Mini-Magnet-Core.png)
 ### PoESP32-SNMP-Environmental-1RU
 ![PoESP32 1RU Model](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/3Dmodels/PoESP32-Env-1RU.png)
 ### PoESP32-SNMP-Environmental-1RU-Cover
