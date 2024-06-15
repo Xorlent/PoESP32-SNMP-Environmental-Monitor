@@ -82,7 +82,7 @@ _Once you've successfully programmed a single unit, skip step 1.  Repeating this
   3. PoESP32-Environmental-Mini-Magnet.step : 3D print model for magnet mounting (space constrained, compatible with 8mm x 2mm disc magnets)
   4. PoESP32-Environmental-Mid.step : 3D print model for zip tie mounting
   5. PoESP32-Environmental-Mid-Magnet.step : 3D print model for magnet mounting (compatible with 8mm x 2mm disc magnets)
-  6. If you want to modify the models and make your own custom design (paste copied link into new browser tab)
+  6. If you want to modify the models and make your own custom design:
      - [Onshape link - 1RU Base](https://cad.onshape.com/documents/126ed9d0ea20223ee2558e2e/w/34238fabfb355e242dfb51a2/e/70eb0dc678e6fe37b06c7b4d?renderMode=0&uiState=666d1124cd9bd3671768c9e6)
      - [Onshape link - 1RU Cover](https://cad.onshape.com/documents/126ed9d0ea20223ee2558e2e/w/34238fabfb355e242dfb51a2/e/cc43e711478951692c63e341?renderMode=0&uiState=666d1149cd9bd3671768c9fe)
      - [Onshape link - Mini](https://cad.onshape.com/documents/126ed9d0ea20223ee2558e2e/w/f747afb8fc8c6e8e288e0fc9/e/70eb0dc678e6fe37b06c7b4d?renderMode=0&uiState=666d1111cd9bd3671768c9c6)
