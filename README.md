@@ -86,7 +86,7 @@ _Once you've successfully programmed a single unit, skip step 1.  Repeating this
      - [Onshape link - 1RU Base](https://cad.onshape.com/documents/126ed9d0ea20223ee2558e2e/w/34238fabfb355e242dfb51a2/e/70eb0dc678e6fe37b06c7b4d?renderMode=0&uiState=666d1124cd9bd3671768c9e6)
      - [Onshape link - 1RU Base for single-material printing](https://cad.onshape.com/documents/126ed9d0ea20223ee2558e2e/w/177cb9656d444137160d8ee9/e/70eb0dc678e6fe37b06c7b4d?renderMode=0&uiState=666f154532c93078c1654c9f)
      - [Onshape link - 1RU Lightguides for single-material printing](https://cad.onshape.com/documents/126ed9d0ea20223ee2558e2e/w/177cb9656d444137160d8ee9/e/2745cec901a2e07b74881c17?renderMode=0&uiState=666f153532c93078c1654c8e)
-     - [Onshape link - 1RU Cover](https://cad.onshape.com/documents/126ed9d0ea20223ee2558e2e/w/34238fabfb355e242dfb51a2/e/cc43e711478951692c63e341?renderMode=0&uiState=666d1149cd9bd3671768c9fe)
+     - [Onshape link - 1RU Wire Cover](https://cad.onshape.com/documents/126ed9d0ea20223ee2558e2e/w/34238fabfb355e242dfb51a2/e/cc43e711478951692c63e341?renderMode=0&uiState=666d1149cd9bd3671768c9fe)
      - [Onshape link - Mini](https://cad.onshape.com/documents/126ed9d0ea20223ee2558e2e/w/f747afb8fc8c6e8e288e0fc9/e/70eb0dc678e6fe37b06c7b4d?renderMode=0&uiState=666d1111cd9bd3671768c9c6)
      - [Onshape link - Mini Magnetic](https://cad.onshape.com/documents/126ed9d0ea20223ee2558e2e/w/bfca9ecb4e85ab436c8e3736/e/70eb0dc678e6fe37b06c7b4d?renderMode=0&uiState=666d10f6cd9bd3671768c9a8)
      - [Onshape link - Mid](https://cad.onshape.com/documents/126ed9d0ea20223ee2558e2e/w/86908f6e4038f162632614a8/e/70eb0dc678e6fe37b06c7b4d?renderMode=0&uiState=666d10c5cd9bd3671768c95a)
