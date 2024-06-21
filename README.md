@@ -88,7 +88,7 @@ _Once you've successfully programmed a single unit, skip step 1.  Repeating this
      - [Onshape link - 1RU Wire Cover](https://cad.onshape.com/documents/126ed9d0ea20223ee2558e2e/w/5dc774b929e3cc882e2ccc02/e/cc43e711478951692c63e341?renderMode=0&uiState=6674e5aec5f25f7f012b9c2f)
      - [Onshape link - Mini](https://cad.onshape.com/documents/126ed9d0ea20223ee2558e2e/w/f747afb8fc8c6e8e288e0fc9/e/70eb0dc678e6fe37b06c7b4d?renderMode=0&uiState=666d1111cd9bd3671768c9c6)
      - [Onshape link - Mini Magnetic](https://cad.onshape.com/documents/126ed9d0ea20223ee2558e2e/w/bfca9ecb4e85ab436c8e3736/e/70eb0dc678e6fe37b06c7b4d?renderMode=0&uiState=666d10f6cd9bd3671768c9a8)
-     - [Onshape link - Mid](https://cad.onshape.com/documents/126ed9d0ea20223ee2558e2e/w/86908f6e4038f162632614a8/e/70eb0dc678e6fe37b06c7b4d?renderMode=0&uiState=666d10c5cd9bd3671768c95a)
+     - [Onshape link - Mid](https://cad.onshape.com/documents/126ed9d0ea20223ee2558e2e/w/86908f6e4038f162632614a8/e/70eb0dc678e6fe37b06c7b4d?renderMode=0&uiState=6675aa9981594361815fa619)
      - [Onshape link - Mid Magnetic](https://cad.onshape.com/documents/126ed9d0ea20223ee2558e2e/w/887531df77e994a6e9e16eac/e/70eb0dc678e6fe37b06c7b4d?renderMode=0&uiState=666d10e8cd9bd3671768c99a)
 
 ## Technical Information
