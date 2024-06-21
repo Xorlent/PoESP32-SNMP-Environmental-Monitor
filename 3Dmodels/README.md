@@ -1,8 +1,8 @@
 ## This folder contains 3D print models for various device mounting options.
 ### PoESP32-SNMP-Environmental-1RU-Base and PoESP32-SNMP-Environmental-1RU-Lightguides
 _LED Lightguide features can be printed clear to allow Ethernet indicators to be seen even when mounted facing the rear of a rack_
-![PoESP32 1RU Model](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/3Dmodels/PoESP32-Env-1RU-Top.png)
-![PoESP32 1RU Model](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/3Dmodels/PoESP32-Env-1RU-Bottom.png)
+![PoESP32 1RU Model](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/3Dmodels/PoESP32-Env-1RU-Base.png)
+![PoESP32 1RU Model](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/3Dmodels/PoESP32-Env-1RU-LED.png)
 ### PoESP32-SNMP-Environmental-1RU-Cover
 ![PoESP32 1RU Cover](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/3Dmodels/PoESP32-Env-1RU-Cover.png)
 ### PoESP32-SNMP-Environmental-Mini
