@@ -77,16 +77,15 @@ _Once you've successfully programmed a single unit, skip step 1.  Repeating this
 - The device will respond to pings from any IP address within the routable network.
 - Don't have PoE ports on your network switch?  No problem: https://www.amazon.com/gp/product/B0C239DGJF
 - Need a simple solution for mounting the PoESP32 and environmental monitor as a unitized assembly?  Within the /3Dmodels folder you will find:
-  1. PoESP32-Environmental-1RU.step : 3D print model to mount the PoESP32 assembly into a 1U rack space (w/optional wire cover)
+  1. PoESP32-Environmental-1RU-Base.step : 3D print model to mount the PoESP32 assembly into a 1U rack space (w/optional wire cover and LED lightguides)
   2. PoESP32-Environmental-Mini.step : 3D print model for zip tie mounting (space constrained)
   3. PoESP32-Environmental-Mini-Magnet.step : 3D print model for magnet mounting (space constrained, compatible with 8mm x 2mm disc magnets)
   4. PoESP32-Environmental-Mid.step : 3D print model for zip tie mounting
   5. PoESP32-Environmental-Mid-Magnet.step : 3D print model for magnet mounting (compatible with 8mm x 2mm disc magnets)
   6. If you want to modify the models and make your own custom design:
-     - [Onshape link - 1RU Base](https://cad.onshape.com/documents/126ed9d0ea20223ee2558e2e/w/34238fabfb355e242dfb51a2/e/70eb0dc678e6fe37b06c7b4d?renderMode=0&uiState=666d1124cd9bd3671768c9e6)
-     - [Onshape link - 1RU Base for single-material printing](https://cad.onshape.com/documents/126ed9d0ea20223ee2558e2e/w/177cb9656d444137160d8ee9/e/70eb0dc678e6fe37b06c7b4d?renderMode=0&uiState=666f18a032c93078c1655cf2)
-     - [Onshape link - 1RU Lightguides for single-material printing](https://cad.onshape.com/documents/126ed9d0ea20223ee2558e2e/w/177cb9656d444137160d8ee9/e/2745cec901a2e07b74881c17?renderMode=0&uiState=666f18c532c93078c1655d49)
-     - [Onshape link - 1RU Wire Cover](https://cad.onshape.com/documents/126ed9d0ea20223ee2558e2e/w/34238fabfb355e242dfb51a2/e/cc43e711478951692c63e341?renderMode=0&uiState=666d1149cd9bd3671768c9fe)
+     - [Onshape link - 1RU Base](https://cad.onshape.com/documents/126ed9d0ea20223ee2558e2e/w/5dc774b929e3cc882e2ccc02/e/70eb0dc678e6fe37b06c7b4d?renderMode=0&uiState=6674e589c5f25f7f012b9c1e)
+     - [Onshape link - 1RU Lightguides for single-material printing](https://cad.onshape.com/documents/126ed9d0ea20223ee2558e2e/w/5dc774b929e3cc882e2ccc02/e/16542899019e9250b0249f1e?renderMode=0&uiState=6674e5a1c5f25f7f012b9c2a)
+     - [Onshape link - 1RU Wire Cover](https://cad.onshape.com/documents/126ed9d0ea20223ee2558e2e/w/5dc774b929e3cc882e2ccc02/e/cc43e711478951692c63e341?renderMode=0&uiState=6674e5aec5f25f7f012b9c2f)
      - [Onshape link - Mini](https://cad.onshape.com/documents/126ed9d0ea20223ee2558e2e/w/f747afb8fc8c6e8e288e0fc9/e/70eb0dc678e6fe37b06c7b4d?renderMode=0&uiState=666d1111cd9bd3671768c9c6)
      - [Onshape link - Mini Magnetic](https://cad.onshape.com/documents/126ed9d0ea20223ee2558e2e/w/bfca9ecb4e85ab436c8e3736/e/70eb0dc678e6fe37b06c7b4d?renderMode=0&uiState=666d10f6cd9bd3671768c9a8)
      - [Onshape link - Mid](https://cad.onshape.com/documents/126ed9d0ea20223ee2558e2e/w/86908f6e4038f162632614a8/e/70eb0dc678e6fe37b06c7b4d?renderMode=0&uiState=666d10c5cd9bd3671768c95a)
