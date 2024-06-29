@@ -96,7 +96,7 @@ auto timer = timer_create_default();
 
 // Holds current sample values
 uint8_t pHumidity = 0;
-uint8_t fTemp = 0;
+int16_t fTemp = 0;
 int16_t cTemp = 0;
 
 ////////---------------------------------------     End create runtime objects     ---------------------------------------////////
@@ -261,14 +261,14 @@ int parseRequest(uint8_t *payload, size_t length)
     }
     return -1; // Unsupported/unknown request
   }
-  return -1; // Currently blocked processing a request.  We'll ignore this one, release the blocking flag, and wait for the following request to come in.
+  return -1; // Currently blocked processing a request.  We'll ignore this one, release the blocking flag, and wait for a subsequent request to come in.
 }
 
 // Build and send response to valid getRequest
 void sendGetResponse(int request, IPAddress caller, uint16_t port)
 {
   // Check to make sure we have valid sample data and send it to the caller
-  if(sampleError == false && pHumidity > 0 && pHumidity < 100 && fTemp >= 0 && fTemp < 128 && cTemp > -180 && cTemp < 533)
+  if(sampleError == false && pHumidity > 0 && pHumidity < 100 && fTemp >= 0 && fTemp < 141 && cTemp >= -177 && cTemp < 601)
   {
     // Sensor data looks good
   }
@@ -346,8 +346,8 @@ void sendGetResponse(int request, IPAddress caller, uint16_t port)
       value[1] = cTemp & 0xFF;
       uint8_t PDULen = 28 + RIDLength + 2; // getResponse PDU length plus two bytes
       SNMP_GETREQUEST_DATA1[1] = PDULen;
-      SNMP_GETREQUEST_DATA3[1] = SNMP_GETREQUEST_DATA3[1] + 2; // Add byte to the varbind list to accommodate the .1 degrees C value being returned
-      SNMP_GETREQUEST_DATA3[3] = SNMP_GETREQUEST_DATA3[3] + 2; // Add byte to the varbind item to accommodate the .1 degrees C value being returned
+      SNMP_GETREQUEST_DATA3[1] = SNMP_GETREQUEST_DATA3[1] + 2; // Add 2 bytes to the varbind list to accommodate the .1 degrees C value being returned
+      SNMP_GETREQUEST_DATA3[3] = SNMP_GETREQUEST_DATA3[3] + 2; // Add 2 bytes to the varbind item to accommodate the .1 degrees C value being returned
       uint8_t packetLen = (PDULen + 7 + sizeof(SNMP_READCOMMUNITY_VALUE_7) - 1); // -1 to remove the null SNMP_READCOMMUNITY_VALUE_7 terminator
       SNMP_GETREQUEST_DATA0[1] = packetLen;
       int responseBytes = (packetLen + 2); // +2 to add back the header bytes
@@ -367,11 +367,14 @@ void sendGetResponse(int request, IPAddress caller, uint16_t port)
     }
     case 3 : // Return degrees F
     {
-      uint8_t dataType[2] = {0x02,0x01}; // Integer, 1 byte
-      uint8_t PDULen = 28 + RIDLength + 1; // getResponse PDU length plus one byte
+      uint8_t dataType[2] = {0x02,0x02}; // Integer, 2 bytes *
+      uint8_t value[2];
+      value[0] = (fTemp >> 8) & 0xFF;
+      value[1] = fTemp & 0xFF;
+      uint8_t PDULen = 28 + RIDLength + 2; // getResponse PDU length plus one byte
       SNMP_GETREQUEST_DATA1[1] = PDULen;
-      SNMP_GETREQUEST_DATA3[1] = SNMP_GETREQUEST_DATA3[1] + 1; // Add byte to the varbind list to accommodate the degrees F value being returned
-      SNMP_GETREQUEST_DATA3[3] = SNMP_GETREQUEST_DATA3[3] + 1; // Add byte to the varbind item to accommodate the degrees F value being returned
+      SNMP_GETREQUEST_DATA3[1] = SNMP_GETREQUEST_DATA3[1] + 2; // Add 2 bytes to the varbind list to accommodate the degrees F value being returned
+      SNMP_GETREQUEST_DATA3[3] = SNMP_GETREQUEST_DATA3[3] + 2; // Add 2 bytes to the varbind item to accommodate the degrees F value being returned
       uint8_t packetLen = (PDULen + 7 + sizeof(SNMP_READCOMMUNITY_VALUE_7) - 1); // -1 to remove the null SNMP_READCOMMUNITY_VALUE_7 terminator
       SNMP_GETREQUEST_DATA0[1] = packetLen;
       int responseBytes = (packetLen + 2); // +2 to add back the header bytes
@@ -384,7 +387,7 @@ void sendGetResponse(int request, IPAddress caller, uint16_t port)
       memcpy(responsePayload+17+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength,SNMP_GETREQUEST_DATA3,6);
       memcpy(responsePayload+23+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength,SNMP_GETTEMPF,12);
       memcpy(responsePayload+35+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength,dataType,2);
-      responsePayload[37+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength] = fTemp;
+      memcpy(responsePayload+37+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength,value,2);
       udp.writeTo(responsePayload,responseBytes,caller,port);
       Serial.println();
       break;
