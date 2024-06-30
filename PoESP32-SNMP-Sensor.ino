@@ -19,8 +19,6 @@ const uint8_t SNMP_READCOMMUNITY_VALUE_7[] = "readonly"; // Set SNMP read commun
 //The AUTHORIZED_HOSTS list should include the IP of any hosts that may query this device via SNMP.
 const IPAddress AUTHORIZED_HOSTS[2] = {IPAddress(192,168,1,1),IPAddress(192,168,1,10)};
 //Update the array size here     ^    to reflect the number of authorized host IPAddress entries you listed.
-const int AUTHORIZED_HOSTS_QTY = 2;
-//Update this number to match    ^    the one above.
 
 /* Valid OIDs (Must query one OID per request):
 ### Uptime
@@ -52,6 +50,8 @@ const int AUTHORIZED_HOSTS_QTY = 2;
 
 // Calculate the length of the user-specifed hostname string.
 static const uint8_t HOSTNAME_LEN = sizeof(HOSTNAME)-1;
+// Calculate the length of the user-specifed authorized hosts list.
+const int AUTHORIZED_HOSTS_QTY = sizeof(AUTHORIZED_HOSTS)/sizeof(IPAddress);
 
 // Asynchronous UDP object
 AsyncUDP udp;
