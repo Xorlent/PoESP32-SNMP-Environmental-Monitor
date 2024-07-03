@@ -2,8 +2,8 @@
 > [!NOTE]
 > Take care to print these models in an appropriate material for the installation conditions (e.g. expected temperature and humidity)  
 ### PoESP32-SNMP-Environmental-1RU-Base, PoESP32-SNMP-Environmental-1RU-Lightguides, and PoESP32-Environmental-1RU-Base-Toolless
-_LED Lightguide features can be printed clear to allow Ethernet indicators to be seen even when mounted facing the rear of a rack_
-_1RU-Nut-Toolless and 1RU-Stud-Toolless only work with the PoESP32-Environmental-1RU-Base-Toolless model_
+  - LED Lightguide features can be printed clear to allow Ethernet indicators to be seen even when mounted facing the rear of a rack
+  - 1RU-Nut-Toolless and 1RU-Stud-Toolless only work with the PoESP32-Environmental-1RU-Base-Toolless model
 ![PoESP32 1RU Model](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/3Dmodels/PoESP32-Env-1RU-Base.png)
 ![PoESP32 1RU Model](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/3Dmodels/PoESP32-Env-1RU-LED.png)
 ### PoESP32-SNMP-Environmental-1RU-Cover
