@@ -1,6 +1,7 @@
 ## This folder contains 3D print models for various device mounting options.
 > [!NOTE]
-> Take care to print these models in an appropriate material for the installation conditions (e.g. expected temperature and humidity)  
+> Take care to print these models in an appropriate material for the installation conditions (e.g. expected temperature and humidity)
+> For indoor, conditioned spaces, PETG is a great choice.  For high temperature environments, polycarbonate (PC) is recommended.
 ### PoESP32-SNMP-Environmental-1RU-Base, PoESP32-SNMP-Environmental-1RU-Lightguides, and PoESP32-Environmental-1RU-Base-Toolless
   - LED Lightguide features can be printed clear to allow Ethernet indicators to be seen even when mounted facing the rear of a rack
   - 1RU-Nut-Toolless and 1RU-Stud-Toolless only work with the PoESP32-Environmental-1RU-Base-Toolless model
