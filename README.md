@@ -3,7 +3,7 @@
 ## Background
 With Vertiv unceremoniously stop-shipping and then discontinuing the [Geist Watchdog 15](https://www.vertiv.com/en-us/products-catalog/monitoring-control-and-management/monitoring/watchdog-15/#/benefits-features) during our deployment, we had to scramble to find a suitable equivalent device.  We were shocked to find a lack of decent options for small form-factor, PoE-powered devices that were not astronomically priced.  With M5Stack's PoE-powered ESP32 device in hand, we developed a network SNMP environmental monitor with a total all-in cost of less than 20% of competing products.  The IP101G onboard Ethernet chip is not supported by Arduino Ethernet, thus no existing SNMP library would work for this device, so we wrote a purpose-built SNMP parser for this project.
 > [!NOTE]
-> There have been recent news articles about ESP32 hidden features, but [researchers disagree about whether they constitute a backdoor](https://darkmentor.com/blog/esp32_non-backdoor) or are simply not publicly documented
+> There have been recent news articles about ESP32 hidden features, but [researchers disagree about whether they constitute a backdoor](https://darkmentor.com/blog/esp32_non-backdoor) or are simply not publicly documented.
 
 ## Requirements
 1. M5Stack [PoESP32 device](https://shop.m5stack.com/products/esp32-ethernet-unit-with-poe), currently $25.90 USD
