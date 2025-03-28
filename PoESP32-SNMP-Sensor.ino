@@ -178,6 +178,7 @@ bool authRequest(IPAddress callerIP)
 // Returns -1 for invalid/unsupported, 0 for uptime, 1 for hostname, 2 for .1 degrees C, 3 for degrees F, 4 for humidity
 int parseRequest(uint8_t *payload, size_t length)
 {
+  if (!payload) return -1; // Null request
   if(blocking == false)
   {
     blocking = true;
