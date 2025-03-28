@@ -20,6 +20,8 @@ const uint8_t SNMP_READCOMMUNITY_VALUE_7[] = "readonly"; // Set SNMP read commun
 const IPAddress AUTHORIZED_HOSTS[2] = {IPAddress(192,168,1,1),IPAddress(192,168,1,10)};
 //Update the array size here     ^    to reflect the number of authorized host IPAddress entries you listed.
 
+const unsigned int MAX_REQUESTS_PER_MINUTE = 10; // Maximum requests allowed per minute
+
 /* Valid OIDs (Must query one OID per request):
 ### Uptime
 1.3.6.1.2.1.1.3.0
@@ -52,7 +54,7 @@ const IPAddress AUTHORIZED_HOSTS[2] = {IPAddress(192,168,1,1),IPAddress(192,168,
 static const uint8_t HOSTNAME_LEN = sizeof(HOSTNAME)-1;
 
 // Calculate the number of authorized hosts.
-const int AUTHORIZED_HOSTS_QTY = sizeof(AUTHORIZED_HOSTS)/sizeof(IPAddress);
+const unsigned int AUTHORIZED_HOSTS_QTY = sizeof(AUTHORIZED_HOSTS)/sizeof(IPAddress);
 
 // Asynchronous UDP object
 AsyncUDP udp;
@@ -100,7 +102,70 @@ uint8_t pHumidity = 0;
 int16_t fTemp = 0;
 int16_t cTemp = 0;
 
-////////---------------------------------------     End create runtime objects     ---------------------------------------////////
+// Rate limiting configuration
+const int64_t RATE_LIMIT_WINDOW = 60000000; // 1 minute window in microseconds
+const unsigned int MAX_IP_ADDRESSES = AUTHORIZED_HOSTS_QTY;
+
+// Rate limiting structures
+struct RateLimitEntry {
+    IPAddress ip;
+    int64_t timestamps[MAX_REQUESTS_PER_MINUTE];
+    unsigned int count;
+    int64_t lastReset;
+};
+
+RateLimitEntry rateLimitTable[MAX_IP_ADDRESSES];
+unsigned int rateLimitTableSize = 0;
+
+// Rate limiting functions
+bool isRateLimited(IPAddress ip) {
+    int64_t currentTime = esp_timer_get_time();
+    
+    // Find or create entry for this IP
+    RateLimitEntry* entry = nullptr;
+    for (unsigned int i = 0; i < rateLimitTableSize; i++) {
+        if (rateLimitTable[i].ip == ip) {
+            entry = &rateLimitTable[i];
+            break;
+        }
+    }
+    
+    if (!entry) {
+        // Create new entry if table isn't full
+        if (rateLimitTableSize < MAX_IP_ADDRESSES) {
+            entry = &rateLimitTable[rateLimitTableSize++];
+            entry->ip = ip;
+            entry->count = 0;
+            entry->lastReset = currentTime;
+        } else {
+            // Table is full, find oldest entry to reuse
+            entry = &rateLimitTable[0];
+            for (unsigned int i = 1; i < rateLimitTableSize; i++) {
+                if (rateLimitTable[i].lastReset < entry->lastReset) {
+                    entry = &rateLimitTable[i];
+                }
+            }
+            entry->ip = ip;
+            entry->count = 0;
+            entry->lastReset = currentTime;
+        }
+    }
+    
+    // Check if window needs to be reset
+    if (currentTime - entry->lastReset >= RATE_LIMIT_WINDOW) {
+        entry->count = 0;
+        entry->lastReset = currentTime;
+    }
+    
+    // Check if rate limit is exceeded
+    if (entry->count >= MAX_REQUESTS_PER_MINUTE) {
+        return true;
+    }
+    
+    // Add new timestamp
+    entry->timestamps[entry->count++] = currentTime;
+    return false;
+}
 
 ////////---------------------------------------       Function declarations        ---------------------------------------////////
 
@@ -468,6 +533,16 @@ void setup() {
         // Check for IP authentication and message size before processing any data
         if(authRequest(packet.remoteIP()) && packet.length() < 52 && packet.length() > 43)
         {
+          // Check rate limiting
+          if (isRateLimited(packet.remoteIP())) {
+            Serial.print("Rate limit exceeded for IP: ");
+            Serial.println(packet.remoteIP());
+            // Send rate limit error response
+            SNMP_GETREQUEST_DATA2b[2] = 0x05; // Set error status
+            sendGetResponse(-1, packet.remoteIP(), packet.remotePort());
+            return;
+          }
+
           Serial.print("Successful IP Authentication.");
           Serial.println();
           Serial.print("From: ");
