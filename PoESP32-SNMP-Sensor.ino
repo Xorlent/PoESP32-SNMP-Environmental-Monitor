@@ -210,6 +210,7 @@ int parseRequest(uint8_t *payload, size_t length)
                 // Copy portions of the caller's request info into buffers for us to then send back in the response.
                 memcpy(SNMP_GETREQUEST_DATA0,payload,7);
                 uint8_t RIDLength = payload[9+sizeof(SNMP_READCOMMUNITY_VALUE_7)]; // Retrieve the Request ID value length
+                if (9+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength+2+6+6 > length) return -1; // Prevent out-of-bounds memory read
                 memcpy(SNMP_GETREQUEST_DATA2a,payload+9+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,RIDLength+2); // Get the Request ID info
                 memcpy(SNMP_GETREQUEST_DATA2b,payload+9+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength+2,6); // Get the Error info
                 memcpy(SNMP_GETREQUEST_DATA3,payload+9+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength+2+6,6); // Get Varbind and Object info
