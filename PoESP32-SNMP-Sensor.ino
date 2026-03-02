@@ -6,7 +6,7 @@ Libraries and supporting code incorporates other licenses, see https://github.co
 */
 ////////------------------------------------------- CONFIGURATION SETTINGS AREA --------------------------------------------////////
 
-const uint8_t HOSTNAME[] = "PoESP32-Unit"; // Set hostname
+const char HOSTNAME[] = "PoESP32-Unit"; // Set hostname
 
 // Ethernet configuration
 IPAddress ip(192, 168, 1, 99); // Set device IP address.
@@ -14,7 +14,7 @@ IPAddress gateway(192, 168, 1, 1); // Set default gateway IP address.
 IPAddress subnet(255, 255, 255, 0); // Set network subnet mask.
 
 // SNMP read community configuration
-const uint8_t SNMP_READCOMMUNITY_VALUE_7[] = "readonly"; // Set SNMP read community for your environment.
+const char SNMP_READCOMMUNITY_VALUE_7[] = "readonly"; // Set SNMP read community for your environment.
 
 //The AUTHORIZED_HOSTS list should include the IP of any hosts that may query this device via SNMP.
 const IPAddress AUTHORIZED_HOSTS[2] = {IPAddress(192,168,1,1),IPAddress(192,168,1,10)};
@@ -448,7 +448,7 @@ void setup() {
   timer.in(1000, sample);
 
   // Initialize Ethernet
-  ETH.begin(ETH_ADDR, ETH_POWER_PIN, ETH_PHY_MDC, ETH_PHY_MDIO, ETH_TYPE);
+  ETH.begin(ETH_TYPE, ETH_ADDR, ETH_PHY_MDC, ETH_PHY_MDIO, ETH_POWER_PIN, ETH_CLOCK_GPIO17_OUT);
   ETH.config(ip, gateway, subnet);
   while(!ETH.linkUp())
     {
