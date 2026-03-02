@@ -52,7 +52,7 @@ const IPAddress AUTHORIZED_HOSTS[2] = {IPAddress(192,168,1,1),IPAddress(192,168,
 static const uint8_t HOSTNAME_LEN = sizeof(HOSTNAME)-1;
 
 // Calculate the number of authorized hosts.
-const int AUTHORIZED_HOSTS_QTY = sizeof(AUTHORIZED_HOSTS)/sizeof(IPAddress);
+const unsigned int AUTHORIZED_HOSTS_QTY = sizeof(AUTHORIZED_HOSTS)/sizeof(IPAddress);
 
 // Asynchronous UDP object
 AsyncUDP udp;
