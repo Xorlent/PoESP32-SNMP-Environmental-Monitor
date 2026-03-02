@@ -307,7 +307,7 @@ void sendGetResponse(int request, IPAddress caller, uint16_t port)
       memcpy(responsePayload,SNMP_GETREQUEST_DATA0,7);
       memcpy(responsePayload+7,SNMP_READCOMMUNITY_VALUE_7,sizeof(SNMP_READCOMMUNITY_VALUE_7)-1);
       memcpy(responsePayload+7+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,SNMP_GETREQUEST_DATA1,2);
-      memcpy(responsePayload+9+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,SNMP_GETREQUEST_DATA2a,RIDLength+2); // Ger the Request ID info
+      memcpy(responsePayload+9+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,SNMP_GETREQUEST_DATA2a,RIDLength+2); // Get the Request ID info
       memcpy(responsePayload+9+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength+2,SNMP_GETREQUEST_DATA2b,6); // Get the Error info
       memcpy(responsePayload+17+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength,SNMP_GETREQUEST_DATA3,6);
       memcpy(responsePayload+23+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength,SNMP_GETUPTIME,8);
@@ -358,7 +358,7 @@ void sendGetResponse(int request, IPAddress caller, uint16_t port)
       memcpy(responsePayload,SNMP_GETREQUEST_DATA0,7);
       memcpy(responsePayload+7,SNMP_READCOMMUNITY_VALUE_7,sizeof(SNMP_READCOMMUNITY_VALUE_7)-1);
       memcpy(responsePayload+7+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,SNMP_GETREQUEST_DATA1,2);
-      memcpy(responsePayload+9+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,SNMP_GETREQUEST_DATA2a,RIDLength+2); // Ger the Request ID info
+      memcpy(responsePayload+9+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,SNMP_GETREQUEST_DATA2a,RIDLength+2); // Get the Request ID info
       memcpy(responsePayload+9+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength+2,SNMP_GETREQUEST_DATA2b,6); // Get the Error info
       memcpy(responsePayload+17+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength,SNMP_GETREQUEST_DATA3,6);
       memcpy(responsePayload+23+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength,SNMP_GETTEMPC,12);
@@ -385,7 +385,7 @@ void sendGetResponse(int request, IPAddress caller, uint16_t port)
       memcpy(responsePayload,SNMP_GETREQUEST_DATA0,7);
       memcpy(responsePayload+7,SNMP_READCOMMUNITY_VALUE_7,sizeof(SNMP_READCOMMUNITY_VALUE_7)-1);
       memcpy(responsePayload+7+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,SNMP_GETREQUEST_DATA1,2);
-      memcpy(responsePayload+9+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,SNMP_GETREQUEST_DATA2a,RIDLength+2); // Ger the Request ID info
+      memcpy(responsePayload+9+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,SNMP_GETREQUEST_DATA2a,RIDLength+2); // Get the Request ID info
       memcpy(responsePayload+9+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength+2,SNMP_GETREQUEST_DATA2b,6); // Get the Error info
       memcpy(responsePayload+17+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength,SNMP_GETREQUEST_DATA3,6);
       memcpy(responsePayload+23+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength,SNMP_GETTEMPF,12);
@@ -409,7 +409,7 @@ void sendGetResponse(int request, IPAddress caller, uint16_t port)
       memcpy(responsePayload,SNMP_GETREQUEST_DATA0,7);
       memcpy(responsePayload+7,SNMP_READCOMMUNITY_VALUE_7,sizeof(SNMP_READCOMMUNITY_VALUE_7)-1);
       memcpy(responsePayload+7+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,SNMP_GETREQUEST_DATA1,2);
-      memcpy(responsePayload+9+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,SNMP_GETREQUEST_DATA2a,RIDLength+2); // Ger the Request ID info
+      memcpy(responsePayload+9+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,SNMP_GETREQUEST_DATA2a,RIDLength+2); // Get the Request ID info
       memcpy(responsePayload+9+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength+2,SNMP_GETREQUEST_DATA2b,6); // Get the Error info
       memcpy(responsePayload+17+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength,SNMP_GETREQUEST_DATA3,6);
       memcpy(responsePayload+23+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength,SNMP_GETHUMIDITY,12);
