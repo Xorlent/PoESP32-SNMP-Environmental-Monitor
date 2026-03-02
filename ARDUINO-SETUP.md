@@ -15,4 +15,4 @@
 7. Install the CH9102 USB-to-serial drivers ([Windows](https://learn.adafruit.com/how-to-install-drivers-for-wch-usb-to-serial-chips-ch9102f-ch9102/windows-driver-installation)/[MacOS](https://learn.adafruit.com/how-to-install-drivers-for-wch-usb-to-serial-chips-ch9102f-ch9102/mac-driver-installation))
    - Note: These drivers do not appear to work on MacOS 14.5
 > [!IMPORTANT]
-> Do not allow Arduino IDE to update the esp32 board library to any 3.x version, as there are breaking Ethernet changes in this new release.
+> This version is only compatible with the esp32 board library version 3.x.  If you must use 2.x, download PoESP32-SNMP-Environmental-Monitor release v1.
