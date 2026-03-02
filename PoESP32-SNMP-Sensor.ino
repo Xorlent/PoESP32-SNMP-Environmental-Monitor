@@ -423,10 +423,12 @@ void sendGetResponse(int request, IPAddress caller, uint16_t port)
 }
 
 void setup() {
+  /*
   Serial.begin(115200);
   while (!Serial) {
       delay(100);
   }
+  */
   // Initialize the temp & humidity sensor
   Wire.begin(16,17);
   sensor.begin(Wire, SHT40_I2C_ADDR_44);
