@@ -45,7 +45,7 @@ const IPAddress AUTHORIZED_HOSTS[2] = {IPAddress(192,168,1,1),IPAddress(192,168,
 #define ETH_TYPE        ETH_PHY_IP101
 #define ETH_PHY_MDC     23
 #define ETH_PHY_MDIO    18
-#define ETH_CLK_MODE    ETH_CLOCK_GPIO0_IN
+#define ETH_CLK_MODE    EMAC_CLK_EXT_IN
 
 ////////---------------------------------------        Create runtime objects        ---------------------------------------////////
 
