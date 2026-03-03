@@ -45,6 +45,7 @@ const IPAddress AUTHORIZED_HOSTS[2] = {IPAddress(192,168,1,1),IPAddress(192,168,
 #define ETH_TYPE        ETH_PHY_IP101
 #define ETH_PHY_MDC     23
 #define ETH_PHY_MDIO    18
+#define ETH_CLK_MODE    ETH_CLOCK_GPIO0_IN
 
 ////////---------------------------------------        Create runtime objects        ---------------------------------------////////
 
@@ -448,7 +449,7 @@ void setup() {
   timer.in(1000, sample);
 
   // Initialize Ethernet
-  ETH.begin(ETH_TYPE, ETH_ADDR, ETH_PHY_MDC, ETH_PHY_MDIO, ETH_POWER_PIN, ETH_CLOCK_GPIO17_OUT);
+  ETH.begin(ETH_TYPE, ETH_ADDR, ETH_PHY_MDC, ETH_PHY_MDIO, ETH_POWER_PIN, ETH_CLK_MODE);
   ETH.config(ip, gateway, subnet);
   while(!ETH.linkUp())
     {
