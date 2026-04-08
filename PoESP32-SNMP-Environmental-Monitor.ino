@@ -44,12 +44,28 @@ const IPAddress AUTHORIZED_HOSTS[] = {IPAddress(192,168,1,1),IPAddress(192,168,1
 #define DEFAULT_EQUILIBRIUM_TIMEOUT 60000 // ms
 #define DEFAULT_DT_THRESHOLD      0.030   // °C/s max rate of change to declare equilibrium
 
+// Board-specific configuration
 #define ETH_ADDR        1
+
+#if defined(CONFIG_IDF_TARGET_ESP32P4)
+// ESP32-P4 (Unit-PoE-P4) configuration
+#define ETH_POWER_PIN   51
+#define ETH_TYPE        ETH_PHY_TLK110
+#define ETH_PHY_MDC     31
+#define ETH_PHY_MDIO    52
+#define ETH_CLK_MODE    EMAC_CLK_EXT_IN
+#define I2C_SDA         53
+#define I2C_SCL         54
+#else
+// ESP32 (default Unit-PoE) configuration
 #define ETH_POWER_PIN   5
 #define ETH_TYPE        ETH_PHY_IP101
 #define ETH_PHY_MDC     23
 #define ETH_PHY_MDIO    18
 #define ETH_CLK_MODE    ETH_CLOCK_GPIO0_IN
+#define I2C_SDA         16
+#define I2C_SCL         17
+#endif
 
 ////////---------------------------------------        Create runtime objects        ---------------------------------------////////
 
@@ -412,7 +428,7 @@ void setup() {
   }
   */
   // Initialize the temp & humidity sensor
-  Wire.begin(16, 17);
+  Wire.begin(I2C_SDA, I2C_SCL);
   Wire.setClock(100000);
   if (!sht.begin())
   {
