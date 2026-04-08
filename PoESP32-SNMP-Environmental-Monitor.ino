@@ -444,7 +444,7 @@ void setup() {
       if(!packet.isBroadcast() && !packet.isMulticast())
       {
         // Check for IP authentication and message size before processing any data
-        if(authRequest(packet.remoteIP()) && packet.length() < 52 && packet.length() > 43)
+        if(authRequest(packet.remoteIP()) && packet.length() < (sizeof(SNMP_READCOMMUNITY_VALUE_7) + 43) && packet.length() > (sizeof(SNMP_READCOMMUNITY_VALUE_7) + 33))
         {
           Serial.print("Successful IP Authentication.");
           Serial.println();
