@@ -11,7 +11,7 @@ With Vertiv unceremoniously stop-shipping and then discontinuing the [Geist Watc
 2. M5Stack [ENV IV sensor unit](https://shop.m5stack.com/products/env-iv-unit-with-temperature-humidity-air-pressure-sensor-sht40-bmp280), currently $5.95 USD
    - This accessory appears to be EOL.  A possible plug-in replacement can be found [here](https://www.amazon.com/dp/B0F26Z4MN5) for about $9 USD
      - This replacement sensor accessory will not mount to any of the provided 3D-printable models.  I may produce revised designs for this if there is interest.
-3. A single [M5Stack ESP32 Downloader kit](https://shop.m5stack.com/products/esp32-downloader-kit), currently $9.95 USD
+3. A single [M5Stack ESP32 Downloader kit](https://shop.m5stack.com/products/esp32-downloader-kit) (not required for Unit-PoE-P4), currently $9.95 USD
 
 ## Cost Analysis
 One-time cost for a USB-to-serial device (PoESP32 only): $9.95 plus tax and shipping  
