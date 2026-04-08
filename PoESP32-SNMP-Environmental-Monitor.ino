@@ -6,7 +6,7 @@ Libraries and supporting code incorporates other licenses, see https://github.co
 */
 ////////------------------------------------------- CONFIGURATION SETTINGS AREA --------------------------------------------////////
 
-const uint8_t HOSTNAME[] = "PoESP32-Unit"; // Set hostname
+const char HOSTNAME[] = "PoESP32-Unit"; // Set hostname
 
 // Ethernet configuration
 IPAddress ip(192, 168, 1, 99); // Set device IP address.
@@ -14,11 +14,10 @@ IPAddress gateway(192, 168, 1, 1); // Set default gateway IP address.
 IPAddress subnet(255, 255, 255, 0); // Set network subnet mask.
 
 // SNMP read community configuration
-const uint8_t SNMP_READCOMMUNITY_VALUE_7[] = "readonly"; // Set SNMP read community for your environment.
+const char SNMP_READCOMMUNITY_VALUE_7[] = "readonly"; // Set SNMP read community for your environment.
 
 //The AUTHORIZED_HOSTS list should include the IP of any hosts that may query this device via SNMP.
-const IPAddress AUTHORIZED_HOSTS[2] = {IPAddress(192,168,1,1),IPAddress(192,168,1,10)};
-//Update the array size here     ^    to reflect the number of authorized host IPAddress entries you listed.
+const IPAddress AUTHORIZED_HOSTS[] = {IPAddress(192,168,1,1),IPAddress(192,168,1,10)};
 
 /* Valid OIDs (Must query one OID per request):
 ### Uptime
@@ -37,14 +36,20 @@ const IPAddress AUTHORIZED_HOSTS[2] = {IPAddress(192,168,1,1),IPAddress(192,168,
 
 #include <ETH.h>
 #include <AsyncUDP.h>
-#include <SensirionI2cSht4x.h>
+#include <SHT4x.h>
 #include <arduino-timer.h>
+
+#define SHT4X_DEBUG               false   // true enables heated measurement / equilibrium debug serial output
+#define EQUILIBRIUM_WINDOW_SIZE   8       // 8 samples = 2 seconds @ 250ms intervals
+#define DEFAULT_EQUILIBRIUM_TIMEOUT 60000 // ms
+#define DEFAULT_DT_THRESHOLD      0.030   // °C/s max rate of change to declare equilibrium
 
 #define ETH_ADDR        1
 #define ETH_POWER_PIN   5
 #define ETH_TYPE        ETH_PHY_IP101
 #define ETH_PHY_MDC     23
 #define ETH_PHY_MDIO    18
+#define ETH_CLK_MODE    ETH_CLOCK_GPIO0_IN
 
 ////////---------------------------------------        Create runtime objects        ---------------------------------------////////
 
@@ -52,7 +57,7 @@ const IPAddress AUTHORIZED_HOSTS[2] = {IPAddress(192,168,1,1),IPAddress(192,168,
 static const uint8_t HOSTNAME_LEN = sizeof(HOSTNAME)-1;
 
 // Calculate the number of authorized hosts.
-const int AUTHORIZED_HOSTS_QTY = sizeof(AUTHORIZED_HOSTS)/sizeof(IPAddress);
+const unsigned int AUTHORIZED_HOSTS_QTY = sizeof(AUTHORIZED_HOSTS)/sizeof(IPAddress);
 
 // Asynchronous UDP object
 AsyncUDP udp;
@@ -78,33 +83,39 @@ static const uint8_t SNMP_GETTEMPF[14] = {0x2b,0x06,0x01,0x04,0x01,0x77,0x05,0x0
 static const uint8_t SNMP_GETHUMIDITY[14] = {0x2b,0x06,0x01,0x04,0x01,0x77,0x05,0x01,0x02,0x01,0x06,0x01,0x05,0x00};
 
 // Blocking flag to avoid packet processing contention in case we're flooded with requests
-bool blocking = false;
+volatile bool blocking = false;
 
 // Sampling result flag to indicate a problem with the SHT40 sensor
-bool sampleError = false;
+volatile bool sampleError = false;
 
-// I2C SHT40 sensor object and setup
-SensirionI2cSht4x sensor;
-#ifdef NO_ERROR
-#undef NO_ERROR
-#endif
-#define NO_ERROR 0
-static char errorMessage[64];
-static int16_t error;
+// I2C SHT4x sensor object (RobTillaart library)
+SHT4x sht;
+
+// Forward declarations for functions in SHT4x_advancedFunctions.ino
+bool requestAuto(measType initialMeasurement = SHT4x_MEASUREMENT_MEDIUM,
+                 uint16_t timeout = DEFAULT_EQUILIBRIUM_TIMEOUT,
+                 float threshold = DEFAULT_DT_THRESHOLD);
+bool autoReady();
+float getAutoTemperature();
+float getAutoHumidity();
+extern bool needsHeating;
 
 // Periodic temp & humidity sampling timer
 auto timer = timer_create_default();
 
+// Flag: a requestAuto() cycle is in flight
+volatile bool measurementInProgress = false;
+
 // Holds current sample values
-uint8_t pHumidity = 0;
-int16_t fTemp = 0;
-int16_t cTemp = 0;
+volatile uint8_t pHumidity = 0;
+volatile int16_t fTemp = 0;
+volatile int16_t cTemp = 0;
 
 ////////---------------------------------------     End create runtime objects     ---------------------------------------////////
 
 ////////---------------------------------------       Function declarations        ---------------------------------------////////
 
-// SHT40 sensor sampling function, used by the non-blocking timer and executed every 30 seconds
+// SHT4x sensor sampling function, used by the non-blocking timer and executed every 30 seconds
 bool sample(void *);
 // Celcius to farenheit conversion
 int ctof(float x);
@@ -119,47 +130,22 @@ void sendGetResponse(int request, IPAddress caller, uint16_t port);
 
 bool sample(void *)
 {
-    float aTemperature = 0.0;
-    float Humidity = 0.0;
-    if(pHumidity < 76 || (pHumidity > 75 && cTemp > 500))
+    if (measurementInProgress) return true; // Previous cycle still in progress, skip this tick
+
+    if (!requestAuto())
     {
-      error = sensor.measureMediumPrecision(aTemperature, Humidity); // Take a standard reading
+      Serial.println("Error starting auto measurement");
+      sampleError = true;
+      return true;
     }
-    else
-    {
-      error = sensor.activateMediumHeaterPowerShort(aTemperature, Humidity); // High humidity, activate internal heater for better accuracy
-    }
-
-    if (error != NO_ERROR)
-    {
-      Serial.print("Error trying to execute measurement: ");
-      errorToString(error, errorMessage, sizeof errorMessage);
-      Serial.println(errorMessage);
-      sampleError = true; // Flip sampleError flag so we are aware we have a problem.
-      return true; // Leave timer enabled even though the sample failed.
-    }
-
-    fTemp = ctof(aTemperature); // Calculate degrees F
-    cTemp = aTemperature * 10; // SNMP degrees C is an integer in .1 degrees C
-    pHumidity = round(Humidity);
-
-    Serial.print("Temp: ");
-    Serial.print(cTemp);
-    Serial.print("C, ");
-    Serial.print(fTemp);
-    Serial.print("F | Humidity: ");
-    Serial.print(pHumidity);
-    Serial.print("\t");
-    Serial.println();
-
-    sampleError = false; // Successful read, reset the error flag
+    measurementInProgress = true;
     return true; // Leave timer enabled.
 }
 
-// Celcius to Farenheit conversion funtion
+// Celcius to Farenheit conversion function
 int ctof(float x)
 {
-  return round(1.8 * x + 32);
+  return (int)roundf(1.8f * x + 32.0f);
 }
 
 // Verify caller is authorized
@@ -211,6 +197,7 @@ int parseRequest(uint8_t *payload, size_t length)
                 // Copy portions of the caller's request info into buffers for us to then send back in the response.
                 memcpy(SNMP_GETREQUEST_DATA0,payload,7);
                 uint8_t RIDLength = payload[9+sizeof(SNMP_READCOMMUNITY_VALUE_7)]; // Retrieve the Request ID value length
+                if (RIDLength > 6) return -1; // Prevent overflow of SNMP_GETREQUEST_DATA2a[8] (RIDLength+2 must be <= 8)
                 if (9+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength+2+6+6 > length) return -1; // Prevent out-of-bounds memory read
                 memcpy(SNMP_GETREQUEST_DATA2a,payload+9+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1,RIDLength+2); // Get the Request ID info
                 memcpy(SNMP_GETREQUEST_DATA2b,payload+9+sizeof(SNMP_READCOMMUNITY_VALUE_7)-1+RIDLength+2,6); // Get the Error info
@@ -270,17 +257,12 @@ int parseRequest(uint8_t *payload, size_t length)
 // Build and send response to valid getRequest
 void sendGetResponse(int request, IPAddress caller, uint16_t port)
 {
-  // Check to make sure we have valid sample data and send it to the caller
-  if(sampleError == false && pHumidity > 0 && pHumidity < 100 && fTemp >= 0 && fTemp < 141 && cTemp >= -177 && cTemp < 601)
+  // For sensor data requests, validate sample values before responding
+  if(request > 1)
   {
-    // Sensor data looks good
-  }
-  else
-  {
-    if(request > 1) // The request was for sensor data
+    if(sampleError || pHumidity == 0 || pHumidity > 100 || fTemp < -40 || fTemp >= 141 || cTemp < -400 || cTemp >= 601)
     {
-      // Add error to getResponse message
-      SNMP_GETREQUEST_DATA2b[2] = 0x05;
+      SNMP_GETREQUEST_DATA2b[2] = 0x05; // Add error to getResponse message
     }
   }
   uint8_t RIDLength = SNMP_GETREQUEST_DATA2a[1];
@@ -430,25 +412,18 @@ void setup() {
   }
   */
   // Initialize the temp & humidity sensor
-  Wire.begin(16,17);
-  sensor.begin(Wire, SHT40_I2C_ADDR_44);
-
-  // Verify the sensor is connected and healthy
-  sensor.softReset();
-  delay(1000);
-  uint32_t serialNumber = 0;
-  error = sensor.serialNumber(serialNumber);
-  if (error != NO_ERROR) {
-      Serial.print("Error trying to execute serialNumber(): ");
-      errorToString(error, errorMessage, sizeof errorMessage);
-      Serial.println(errorMessage);
+  Wire.begin(16, 17);
+  Wire.setClock(100000);
+  if (!sht.begin())
+  {
+      Serial.println("Error connecting to SHT4x sensor");
       sampleError = true;
   }
   // Make an initial sensor reading while waiting for Ethernet port to negotiate and initialize
   timer.in(1000, sample);
 
   // Initialize Ethernet
-  ETH.begin(ETH_ADDR, ETH_POWER_PIN, ETH_PHY_MDC, ETH_PHY_MDIO, ETH_TYPE);
+  ETH.begin(ETH_TYPE, ETH_ADDR, ETH_PHY_MDC, ETH_PHY_MDIO, ETH_POWER_PIN, ETH_CLK_MODE);
   ETH.config(ip, gateway, subnet);
   while(!ETH.linkUp())
     {
@@ -468,7 +443,7 @@ void setup() {
       if(!packet.isBroadcast() && !packet.isMulticast())
       {
         // Check for IP authentication and message size before processing any data
-        if(authRequest(packet.remoteIP()) && packet.length() < 52 && packet.length() > 43)
+        if(authRequest(packet.remoteIP()) && packet.length() < (sizeof(SNMP_READCOMMUNITY_VALUE_7) + 43) && packet.length() > (sizeof(SNMP_READCOMMUNITY_VALUE_7) + 33))
         {
           Serial.print("Successful IP Authentication.");
           Serial.println();
@@ -520,4 +495,32 @@ void setup() {
 
 void loop() {
   timer.tick(); // Temp & humidity sampling
+
+  if (measurementInProgress && autoReady())
+  {
+    if (sht.getError() == SHT4x_OK)
+    {
+      float aTemperature = getAutoTemperature();
+      float aHumidity = getAutoHumidity();
+      fTemp = ctof(aTemperature);                          // Calculate degrees F
+      cTemp = (int16_t)roundf(aTemperature * 10.0f);       // SNMP degrees C is an integer in .1 degrees C
+      pHumidity = (uint8_t)roundf(aHumidity);
+
+      Serial.print("Temp: ");
+      Serial.print(cTemp);
+      Serial.print("C, ");
+      Serial.print(fTemp);
+      Serial.print("F | Humidity: ");
+      Serial.println(pHumidity);
+
+      sampleError = false;
+    }
+    else
+    {
+      Serial.print("Sensor error: 0x");
+      Serial.println(sht.getError(), HEX);
+      sampleError = true;
+    }
+    measurementInProgress = false;
+  }
 }
