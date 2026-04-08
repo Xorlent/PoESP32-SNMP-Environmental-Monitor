@@ -42,7 +42,7 @@ const IPAddress AUTHORIZED_HOSTS[] = {IPAddress(192,168,1,1),IPAddress(192,168,1
 #define SHT4X_DEBUG               false   // true enables heated measurement / equilibrium debug serial output
 #define EQUILIBRIUM_WINDOW_SIZE   8       // 8 samples = 2 seconds @ 250ms intervals
 #define DEFAULT_EQUILIBRIUM_TIMEOUT 60000 // ms
-#define DEFAULT_DT_THRESHOLD      0.023   // °C/s max rate of change to declare equilibrium
+#define DEFAULT_DT_THRESHOLD      0.030   // °C/s max rate of change to declare equilibrium
 
 #define ETH_ADDR        1
 #define ETH_POWER_PIN   5
