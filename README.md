@@ -4,13 +4,17 @@
 With Vertiv unceremoniously stop-shipping and then discontinuing the [Geist Watchdog 15](https://www.vertiv.com/en-us/products-catalog/monitoring-control-and-management/monitoring/watchdog-15/#/benefits-features) during our deployment, we had to scramble to find a suitable equivalent device.  We were shocked to find a lack of decent options for small form-factor, PoE-powered devices that were not astronomically priced.  With M5Stack's PoE-powered ESP32 device in hand, we developed a network SNMP environmental monitor with a total all-in cost of less than 20% of competing products.  The IP101G onboard Ethernet chip is not supported by Arduino Ethernet, thus no existing SNMP library would work for this device, so we wrote a purpose-built SNMP parser for this project.
 
 ## Requirements
-1. M5Stack [PoESP32 device](https://shop.m5stack.com/products/esp32-ethernet-unit-with-poe), currently $25.90 USD
+1. M5Stack [PoESP32 device](https://shop.m5stack.com/products/esp32-ethernet-unit-with-poe), or a newer [Unit-PoE-P4](https://shop.m5stack.com/products/unit-poe-with-esp32-p4), both around $25 USD
+   - Notes on the Unit-PoE-P4:
+     - Requires NO disassembly or downloader kit, just a USB C cable for programming
+     - Device will not mount to any of the provided 3D-printable models.  I may produce revised designs for this if there is interest.
 2. M5Stack [ENV IV sensor unit](https://shop.m5stack.com/products/env-iv-unit-with-temperature-humidity-air-pressure-sensor-sht40-bmp280), currently $5.95 USD
-   - This accessory appears to be EOL.  A possible plug-in replacement can be found [here](https://www.amazon.com/dp/B0F26Z4MN5)
-4. A single [M5Stack ESP32 Downloader kit](https://shop.m5stack.com/products/esp32-downloader-kit), currently $9.95 USD
+   - This accessory appears to be EOL.  A possible plug-in replacement can be found [here](https://www.amazon.com/dp/B0F26Z4MN5) for about $9 USD
+     - This replacement sensor accessory will not mount to any of the provided 3D-printable models.  I may produce revised designs for this if there is interest.
+3. A single [M5Stack ESP32 Downloader kit](https://shop.m5stack.com/products/esp32-downloader-kit), currently $9.95 USD
 
 ## Cost Analysis
-One-time cost for a USB-to-serial device: $9.95 plus tax and shipping  
+One-time cost for a USB-to-serial device (PoESP32 only): $9.95 plus tax and shipping  
 Total cost per unit: $31.85 plus tax and shipping  
 Programming time per unit: < 10 minutes  
 
@@ -35,22 +39,24 @@ __Bottom line: If you need SNMPv3 or desire web management and/or SNMP write fun
 ## Programming
 _Once you've successfully programmed a single unit, skip step 1.  Repeating this process takes 5 minutes from start to finish._
 1. [Set up your Arduino programming environment](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/ARDUINO-SETUP.md)
-2. Disassemble the PoESP32 case
+2. Disassemble the PoESP32 case (skip if using Unit-PoE-P4)
    - You will need a 1.5mm (M2) allen wrench to remove a single screw [pic](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/images/1-Allen.jpg)
    - Inserting a small flat head screwdriver into the slots flanking the Ethernet jack [pic](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/images/2-Slots.jpg), carefully separate the case halves; work it side by side to avoid damage [pic](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/images/3-Tabs.jpg)
 > [!TIP]
 > If you have fingernails, it can be quicker to slide a nail between the case halves, starting with the end opposite the Ethernet port and using another nail to pull the retaining tabs back
 3. In Arduino, open the project file (PoESP32-SNMP-Environmental-Monitor.ino)
    - Edit the hostname, IP address, subnet, gateway, SNMP read community, and authorized hosts lists at the very top of the file.
-   - Select Tools->Board->esp32 and select "ESP32 Dev Module"
-4. With the USB-to-serial adapter unplugged, insert the pins in the correct orientation on the back of the PoESP32 mainboard [pic](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/images/4-Programmer.jpg)
+   - Select Tools->Board->esp32 and select "ESP32 Dev Module" if using PoESP32
+   - OR select Tools->Board->esp32 and select "ESP32P4 Dev Module" if using Unit-PoE-P4
+4. With the USB-to-serial adapter unplugged, insert the pins in the correct orientation on the back of the PoESP32 mainboard [pic](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/images/4-Programmer.jpg) (skip if using Unit-PoE-P4)
 > [!WARNING]
-> Do not plug the PoESP32 device into a powered Ethernet port until after step 7 or you risk damaging your USB port!
+> Do not plug the device into a powered Ethernet port until after step 7 or you risk damaging your USB port!
 5. With light tension applied to ensure good connectivity to the programming through-hole vias on the PoESP32 (see step 4 pic), plug in the USB-to-serial adapter
    - The device is now in bootloader mode
+   - For the Unit-PoE-P4, simply plug the USB cable into the USB port above the Ethernet jack
 6. In Arduino
-   - Select Tools->Port and select the USB-to-serial adapter
-     - If you're unsure, unplug the USB-to-serial adapter, look at the port list, then plug it back in and select the new entry (repeating step 5)
+   - Select Tools->Port and select the USB-to-serial interface
+     - If you're unsure, unplug the USB cable, look at the port list, then plug it back in and select the new entry (repeating step 5)
    - Select Sketch->Upload to flash the device
    - When you see something similar to the following, proceed to step 7
      ```
@@ -60,9 +66,9 @@ _Once you've successfully programmed a single unit, skip step 1.  Repeating this
 
      Leaving...
      Hard resetting via RTS pin...
-7. Disconnect the USB-to-serial adapter and reassemble the case
-8. Plug in the ENV IV sensor unit [pic](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/images/5-Assembled.jpg)
-9. Connect the PoESP32 to a PoE network port and mount as appropriate
+7. Disconnect the USB cable and reassemble the case if applicable
+8. Plug in the sensor accessory [pic](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/images/5-Assembled.jpg)
+9. Connect the device to a PoE network port and mount as appropriate
    - The holes in the PoESP32 and ENV IV sensor cases work great with zip ties for rack install or screws if attaching to a backboard
      - See the /3Dmodels folder for print-able mounting plates or [Guidance and Limitations](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/README.md#guidance-and-limitations) for more detail
    - Do not mount the ENV IV directly on top of the PoESP32, as it generates enough heat to affect sensor readings
@@ -99,7 +105,7 @@ _Once you've successfully programmed a single unit, skip step 1.  Repeating this
   - Operating temperature: 0°F (-17.7°C) to 140°F (60°C)
   - Operating humidity: 5% to 90% (RH), non-condensing
 - Sensor Accuracy
-  - ±0.1 °C，±1.5 %RH
+  - ±0.2 °C，±1.8 %RH
 - Power Consumption
   - 6W maximum via 802.3af Power-over-Ethernet
 - Ethernet
