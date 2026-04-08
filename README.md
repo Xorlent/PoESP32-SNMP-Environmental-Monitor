@@ -48,6 +48,7 @@ _Once you've successfully programmed a single unit, skip step 1.  Repeating this
    - Edit the hostname, IP address, subnet, gateway, SNMP read community, and authorized hosts lists at the very top of the file.
    - Select Tools->Board->esp32 and select "ESP32 Dev Module" if using PoESP32
    - OR select Tools->Board->esp32 and select "ESP32P4 Dev Module" if using Unit-PoE-P4
+     - Set ESP32P4 board parameters according to [this screenshot](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/images/ESP32P4-Config.jpg)
 4. With the USB-to-serial adapter unplugged, insert the pins in the correct orientation on the back of the PoESP32 mainboard [pic](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/images/4-Programmer.jpg) (skip if using Unit-PoE-P4)
 > [!WARNING]
 > Do not plug the device into a powered Ethernet port until after step 7 or you risk damaging your USB port!
