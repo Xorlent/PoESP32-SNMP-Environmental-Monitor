@@ -1,7 +1,7 @@
 1. Download the latest Arduino IDE appropriate for your operating system (https://www.arduino.cc/en/software)
 2. Open the Arduino IDE
 3. Click File->Preferences or Arduino IDE->Settings (MacOS)
-4. Paste the following into the "Additional board manager URLs" field and click "OK"
+4. Paste the following into the "Additional board manager URLs" field and click "OK"  
    ```https://espressif.github.io/arduino-esp32/package_esp32_index.json```
 6. Open the Boards Manager
    - Type "esp32" in the search field and select "esp32 by Espressif Systems" (__NOT "Arduino ESP32 Boards"__)
