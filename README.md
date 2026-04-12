@@ -10,7 +10,7 @@ With Vertiv unceremoniously stop-shipping and then discontinuing the [Geist Watc
      - Device will not mount to any of the provided 3D-printable models.  I may produce revised designs for this if there is interest.
 2. M5Stack [ENV IV sensor unit](https://shop.m5stack.com/products/env-iv-unit-with-temperature-humidity-air-pressure-sensor-sht40-bmp280), currently $5.95 USD
    - This accessory appears to be EOL.  A possible plug-in replacement can be found [here](https://www.amazon.com/dp/B0F1TF7LJ8) for about $9 USD
-     - This replacement sensor accessory will not mount to any of the provided 3D-printable models.  I may produce revised designs for this if there is interest.
+     - This replacement sensor requires adapting connectors and will not mount to any of the provided 3D-printable models.  I may produce revised designs for this if there is interest.
      - If using a SHT41 or SHT45 module versus the ENV IV's SHT40, it is recommended to change the equalibrium threshold as follows:
      - ```#define DEFAULT_DT_THRESHOLD      0.024```
 3. A single [M5Stack ESP32 Downloader kit](https://shop.m5stack.com/products/esp32-downloader-kit) (not required for Unit-PoE-P4), currently $9.95 USD
