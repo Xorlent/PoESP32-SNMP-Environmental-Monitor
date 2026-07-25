@@ -61,7 +61,7 @@ _Once you've successfully programmed a single unit, skip step 1.  Repeating this
    - Select Tools->Port and select the USB-to-serial interface
      - If you're unsure, unplug the USB cable, look at the port list, then plug it back in and select the new entry (repeating step 5)
    - Select Sketch->Upload to flash the device
-   - When you see something similar to the following, proceed to step 7
+   - When you see something similar to the following, proceed to step 7.  If you see an error, try lowering the upload speed in the Tools menu.
      ```
      Writing at 0x000d0502... (100 %)
      Wrote 790896 bytes (509986 compressed) at 0x00010000 in 8.9 seconds (effective 714.8 kbit/s)...
