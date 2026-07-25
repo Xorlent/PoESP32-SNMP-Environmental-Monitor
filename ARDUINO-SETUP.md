@@ -3,7 +3,7 @@
 3. Click File->Preferences or Arduino IDE->Settings (MacOS)
 4. Open the Boards Manager
    - Type "esp32" in the search field and select "esp32 by Espressif Systems" (__NOT "Arduino ESP32 Boards"__)
-     - Install version 3.3.7
+     - Install version 3.3.X
 5. Open the Libraries Manager
    - Type "sht4x" in the search field and select "SHT4x by Rob Tillaart"
      - Install version 0.1.2
