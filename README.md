@@ -7,7 +7,7 @@ With Vertiv unceremoniously stop-shipping and then discontinuing the [Geist Watc
 1. M5Stack [PoESP32 device](https://shop.m5stack.com/products/esp32-ethernet-unit-with-poe), or a newer [Unit-PoE-P4](https://shop.m5stack.com/products/unit-poe-with-esp32-p4), both around $25 USD
    - Notes on the Unit-PoE-P4:
      - Requires NO disassembly or downloader kit, just a USB C cable for programming
-     - Device will not mount to any of the provided 3D-printable models.  I may produce revised designs for this if there is interest.
+     - The Unit-PoE-P4 device will not mount to any of the provided 3D-printable models.  I may produce revised designs for this if there is interest.
 2. Sensor
    - M5Stack [ENV III sensor unit](https://shop.m5stack.com/products/env-iii-unit-with-temperature-humidity-air-pressure-sensor-sht30-qmp6988), currently $5.95 USD
    - or a custom SHT41-based sensor.  All files and instructions can be found in the /SHT4X folder.  As little as $2/each in quantities of greater than 30.
