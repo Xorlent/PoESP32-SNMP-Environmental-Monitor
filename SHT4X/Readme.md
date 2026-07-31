@@ -6,7 +6,7 @@ This folder contains a temperature and humidity sensor that can be used in place
    - Upload SHT41A-BOM.csv for the "Bill of Materials" list
    - Upload SHT41A-all-pos.csv for the Pick & Place file
    - Click "Process BOM & CPL"
-   - Ensure components match the BOM file (you can open this file in a text editor to verify results)
+   - Ensure components match the BOM file (you can open this file in a text editor to verify results)  
 ![SHT4X Board View](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/SHT4X/SHT4X%20Board%20View.png)
 ![SHT4X Board Assembly](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/SHT4X/SHT4X%20Board%20Assembly.png)
 
