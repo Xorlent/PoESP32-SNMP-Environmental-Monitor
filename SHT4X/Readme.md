@@ -1,6 +1,6 @@
 ## This folder contains a temperature and humidity sensor that can be used in place of the now end-of-life M5Stack ENV-IV
 1. A full PCB design that can be produced by JLCPCB for as little as $2.20 each in quantities of 30
-   - Upload the SHT41A ZIP file to JLCPCB accepting all defaults
+   - Upload the SHT41A.zip file to JLCPCB accepting all defaults
    - Select economic assembly service, top side only
    - Click "Next"
    - Upload SHT41A-BOM.csv for the "Bill of Materials" list
