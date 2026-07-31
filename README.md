@@ -8,7 +8,9 @@ With Vertiv unceremoniously stop-shipping and then discontinuing the [Geist Watc
    - Notes on the Unit-PoE-P4:
      - Requires NO disassembly or downloader kit, just a USB C cable for programming
      - Device will not mount to any of the provided 3D-printable models.  I may produce revised designs for this if there is interest.
-2. M5Stack [ENV III sensor unit](https://shop.m5stack.com/products/env-iii-unit-with-temperature-humidity-air-pressure-sensor-sht30-qmp6988), currently $5.95 USD
+2. Sensor
+   - M5Stack [ENV III sensor unit](https://shop.m5stack.com/products/env-iii-unit-with-temperature-humidity-air-pressure-sensor-sht30-qmp6988), currently $5.95 USD
+   - or a custom SHT41-based sensor.  All files and instructions can be found in the /SHT4X folder.  As little as $2/each in quantities of greater than 30.
 3. A single [M5Stack ESP32 Downloader kit](https://shop.m5stack.com/products/esp32-downloader-kit) (not required for Unit-PoE-P4), currently $9.95 USD
 
 ## Cost Analysis
