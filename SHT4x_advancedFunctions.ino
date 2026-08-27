@@ -100,7 +100,7 @@ bool requestAuto(measType initialMeasurement,
     needsHeating = true;
     DEBUG_PRINTLN("High humidity detected: Using MEDIUM heat (110mW, 1s)");
   } 
-  else if (originalTemperature < 65.0f && originalHumidity > 75.0f && originalHumidity < 85.0f) 
+  else if (originalTemperature < 65.0f && originalHumidity > 79.0f && originalHumidity < 85.0f) 
   {
     heatedMode = SHT4x_MEASUREMENT_LONG_LOW_HEAT;
     needsHeating = true;
