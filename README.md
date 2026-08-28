@@ -6,6 +6,7 @@ With Vertiv unceremoniously stop-shipping and then discontinuing the [Geist Watc
 ## Requirements
 1. M5Stack [PoESP32 device](https://shop.m5stack.com/products/esp32-ethernet-unit-with-poe), or a newer [Unit-PoE-P4](https://shop.m5stack.com/products/unit-poe-with-esp32-p4), both around $25 USD
    - Notes on the Unit-PoE-P4:
+     - Using the Unit-PoE-P4 significantly reduces the device operating specification from -17.7°C to 0°C and 60°C to 40°C
      - Requires NO disassembly or downloader kit, just a USB C cable for programming
      - The Unit-PoE-P4 device will not mount to any of the provided 3D-printable models.  I may produce revised designs for this if there is interest.
 2. Sensor
