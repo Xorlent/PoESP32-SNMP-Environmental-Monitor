@@ -16,12 +16,12 @@ enum DHCPMode { DHCP_NEVER, DHCP_IFAVAILABLE, DHCP_ALWAYS };
 const DHCPMode DHCPControl = DHCP_IFAVAILABLE;
 
 // Seconds between DHCP re-queries. Set to 0 to respect the server lease only
-const uint32_t DHCPQueryInterval = 120;
+const uint32_t DHCPQueryInterval = 600;
 
 // Revert window (DHCP_IFAVAILABLE): minutes to wait for a valid SNMP request
 // after a DHCP-driven network change before reverting to the prior network
 // settings and rebooting.
-const uint16_t revertWindowMinutes = 3;
+const uint16_t revertWindowMinutes = 30;
 
 // DHCP option numbers carrying our custom provisioning data
 const uint8_t authorizedSNMPOption = 230; // authorized SNMP hosts (packed IPv4)
