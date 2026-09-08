@@ -28,14 +28,12 @@ Programming time per unit: < 10 minutes
 - $295: Room Alert 3S
 
 ## Device Capability Comparison
-This project produces a SNMPv1/2c temperature and humidity monitoring device with no web management.  Configuration is set when the device is flashed, or it can optionally be managed from your DHCP server.  The configurable settings are:
+This project produces a SNMPv1/2c temperature and humidity monitoring device.  Configuration is set when the device is flashed, and it can optionally be managed from your DHCP server.  The configurable settings are:
 - Host name
 - Device IP and subnet
 - IP gateway
 - SNMP read community string
-- Authorized SNMP monitoring node IP address list
-
-__Bottom line: If you need SNMPv3 or desire web management and/or SNMP write functionality, you could enhance this project's code or simply purchase a commercial product.__
+- Authorized SNMP monitoring host IP address list
 
 ## Programming
 _Once you've successfully programmed a single unit, skip step 1.  Repeating this process takes less than 5 minutes from start to finish._
@@ -46,7 +44,8 @@ _Once you've successfully programmed a single unit, skip step 1.  Repeating this
 > [!TIP]
 > If you have fingernails, it can be quicker to slide a nail between the case halves, starting with the end opposite the Ethernet port and using another nail to pull the retaining tabs back
 3. In Arduino, open the project file (PoESP32-SNMP-Environmental-Monitor.ino)
-   - Edit the hostname, IP address, subnet, gateway, SNMP read community, and authorized hosts lists at the very top of the file (or enable DHCP provisioning to manage these remotely).
+   - Choose your DHCP mode (see the DHCP Provisioning section below)
+   - Edit the hostname, IP address, subnet, gateway, SNMP read community, and authorized hosts lists at the very top of the file
    - Select Tools->Board->esp32 and select "ESP32 Dev Module" if using PoESP32
    - OR select Tools->Board->esp32 and select "ESP32P4 Dev Module" if using Unit-PoE-P4
      - Set ESP32P4 board parameters according to [this screenshot](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/images/ESP32P4-Config.jpg)
@@ -84,7 +83,7 @@ _Once you've successfully programmed a single unit, skip step 1.  Repeating this
 
 By default the device uses the settings you compiled into the sketch.  If you would
 rather manage devices from your DHCP server instead of re-flashing, the device can
-pull its configuration from DHCP.
+pull or update its configuration from DHCP.
 
 ### Choose a mode
 
@@ -92,9 +91,9 @@ Near the top of the sketch, set `DHCPControl` to one of:
 
 | Mode | What it does |
 |------|--------------|
-| `DHCP_NEVER` | Default.  Ignore DHCP and NVS — use only the compiled settings. |
-| `DHCP_IFAVAILABLE` | Start from the compiled settings, then let any DHCP options that are returned override them.  If the IP, subnet, or gateway changes, the device saves the change and reboots.  If no SNMP request arrives within the revert window (default 30 minutes) after that reboot, it reverts to the previous network settings and reboots again — so a bad change won't lock you out. |
-| `DHCP_ALWAYS` | Wait for DHCP to supply everything before starting.  Retries every 10 seconds and prints which required options are still missing. |
+| `DHCP_NEVER` | Do not use DHCP.  Use only the settings configured within your sketch. |
+| `DHCP_IFAVAILABLE` | Default.  Start from the compiled settings, then let any DHCP options you configure override them.  If the IP, subnet, or gateway changes, the device saves the change and reboots.  If no SNMP request arrives within the revert window (default 30 minutes) after that reboot, it reverts to the previous network settings and reboots again — so a bad change won't lock you out. |
+| `DHCP_ALWAYS` | Wait for DHCP to supply everything before starting.  Retries every 10 seconds and prints which required options are still missing in the serial console. |
 
 ### What DHCP supplies
 
