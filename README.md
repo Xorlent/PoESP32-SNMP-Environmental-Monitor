@@ -19,14 +19,6 @@ One-time cost for a USB-to-serial device (PoESP32 only): $9.95 plus tax and ship
 Total cost per unit: $31.85 plus tax and shipping  
 Programming time per unit: < 10 minutes  
 
-## Device Cost Comparison (temperature/humidity only)
-- $32: this PoESP32-based device
-- $220 before stop-ship: Vertiv Watchdog 15P (discontinued)
-- $190 on sale: AKCP sensorProbe1+ Pro
-- $315: NTI E-MICRO-TRHP
-- $199: MONNIT PoE-X Temperature
-- $295: Room Alert 3S
-
 ## Device Overview
 This project produces a SNMPv1/2c temperature and humidity monitoring device.  Configuration is set when the device is flashed, and it can optionally be managed from a DHCP server.
 
