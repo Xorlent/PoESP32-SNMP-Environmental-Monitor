@@ -84,7 +84,7 @@ or update its configuration from DHCP.
 
 Near the top of the sketch, set `DHCPControl` to one of:
 
-| Mode | What it does |
+| Mode | Description |
 |------|--------------|
 | `DHCP_NEVER` | Do not use DHCP.  Use only the settings configured within your sketch. |
 | `DHCP_IFAVAILABLE` | Default.  Start from the compiled settings, then let any DHCP options you configure override them.  If the IP, subnet, or gateway changes, the device saves the change and reboots.  If no SNMP request arrives within the revert window (default 15 minutes) after that reboot, it reverts to the previous network settings and reboots again. |
