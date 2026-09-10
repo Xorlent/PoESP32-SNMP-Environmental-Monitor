@@ -77,8 +77,7 @@ _Once you've successfully programmed a single unit, skip step 1.  Repeating this
 
 ## DHCP Provisioning (optional)
 
-By default the device uses the settings you compiled into the sketch.  If you would rather manage devices from your DHCP server instead of re-flashing, the device can pull 
-or update its configuration from DHCP.
+By default the device uses the settings you compiled into the sketch, allowing values present in valid DHCP server responses to override the compiled values (`DHCP_IFAVAILABLE`).
 
 ### Choose a mode
 
