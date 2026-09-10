@@ -1,6 +1,5 @@
 /*
  *    FILE: DHCPClient.h
- *  AUTHOR: PoESP32-SNMP-Environmental-Monitor
  * PURPOSE: Minimal raw-UDP DHCP client (RFC 2131/2132) used to obtain the
  *          device network configuration AND the custom provisioning options
  *          (authorized SNMP hosts + read community) bypassing the lwIP DHCP

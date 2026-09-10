@@ -27,13 +27,8 @@ Programming time per unit: < 10 minutes
 - $199: MONNIT PoE-X Temperature
 - $295: Room Alert 3S
 
-## Device Capability Comparison
-This project produces a SNMPv1/2c temperature and humidity monitoring device.  Configuration is set when the device is flashed, and it can optionally be managed from your DHCP server.  The configurable settings are:
-- Host name
-- Device IP and subnet
-- IP gateway
-- SNMP read community string
-- Authorized SNMP monitoring host IP address list
+## Device Overview
+This project produces a SNMPv1/2c temperature and humidity monitoring device.  Configuration is set when the device is flashed, and it can optionally be managed from a DHCP server.
 
 ## Programming
 _Once you've successfully programmed a single unit, skip step 1.  Repeating this process takes less than 5 minutes from start to finish._
@@ -44,8 +39,9 @@ _Once you've successfully programmed a single unit, skip step 1.  Repeating this
 > [!TIP]
 > If you have fingernails, it can be quicker to slide a nail between the case halves, starting with the end opposite the Ethernet port and using another nail to pull the retaining tabs back
 3. In Arduino, open the project file (PoESP32-SNMP-Environmental-Monitor.ino)
-   - Choose your DHCP mode (see the DHCP Provisioning section below)
+   - Choose your DHCP mode (see the DHCP Provisioning section below) and set the appropriate value for `DHCPControl`
    - Edit the hostname, IP address, subnet, gateway, SNMP read community, and authorized hosts lists at the very top of the file
+   - If using DHCP, ensure you set the COMMUNITY_KEY value; the same value must be used on all PoESP32 devices sharing the same DHCP-provided SNMP read community (option 231) value
    - Select Tools->Board->esp32 and select "ESP32 Dev Module" if using PoESP32
    - OR select Tools->Board->esp32 and select "ESP32P4 Dev Module" if using Unit-PoE-P4
      - Set ESP32P4 board parameters according to [this screenshot](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/images/ESP32P4-Config.jpg)
@@ -81,9 +77,8 @@ _Once you've successfully programmed a single unit, skip step 1.  Repeating this
 
 ## DHCP Provisioning (optional)
 
-By default the device uses the settings you compiled into the sketch.  If you would
-rather manage devices from your DHCP server instead of re-flashing, the device can
-pull or update its configuration from DHCP.
+By default the device uses the settings you compiled into the sketch.  If you would rather manage devices from your DHCP server instead of re-flashing, the device can pull 
+or update its configuration from DHCP.
 
 ### Choose a mode
 
@@ -92,7 +87,7 @@ Near the top of the sketch, set `DHCPControl` to one of:
 | Mode | What it does |
 |------|--------------|
 | `DHCP_NEVER` | Do not use DHCP.  Use only the settings configured within your sketch. |
-| `DHCP_IFAVAILABLE` | Default.  Start from the compiled settings, then let any DHCP options you configure override them.  If the IP, subnet, or gateway changes, the device saves the change and reboots.  If no SNMP request arrives within the revert window (default 30 minutes) after that reboot, it reverts to the previous network settings and reboots again — so a bad change won't lock you out. |
+| `DHCP_IFAVAILABLE` | Default.  Start from the compiled settings, then let any DHCP options you configure override them.  If the IP, subnet, or gateway changes, the device saves the change and reboots.  If no SNMP request arrives within the revert window (default 15 minutes) after that reboot, it reverts to the previous network settings and reboots again. |
 | `DHCP_ALWAYS` | Wait for DHCP to supply everything before starting.  Retries every 10 seconds and prints which required options are still missing in the serial console. |
 
 ### What DHCP supplies
@@ -106,27 +101,41 @@ The device reads these options from your DHCP server:
 | 230 | Authorized SNMP hosts (4-byte IPv4 addresses, up to 8) |
 | 231 | SNMP read community (encrypted — see "Community encryption" below) |
 
-### Community encryption
+### SNMP Read Community encryption
 
-The read community is never transmitted in cleartext over DHCP.  Instead:
+The read community is never transmitted in cleartext over DHCP.
+
+#### Generating an encrypted read community value
 
 1. Set `COMMUNITY_KEY` in the sketch to a shared secret (the same string on every device).
-2. On any device's serial console, type `G` + Enter, then type the community string you want to use (e.g. `readonly`).
-3. The device prints the encrypted value you can then paste into the DHCP option 231 string.
+2. Once programmed, on any device's serial console, type `G` + Enter, then type the read community string you want to use (e.g. `readonly`).
+3. The device prints the encrypted value you can then paste into the DHCP server's option 231 string.
 
-The device XOR-encrypts the community with `COMMUNITY_KEY` and hex-encodes the result.  On boot it decrypts option 231 back into the community, so the cleartext value never crosses the LAN.  Because the key and the community are shared fleet-wide, running `G` once produces a value that works for every device.
+The device encrypts the community with ChaCha20 (keyed by `COMMUNITY_KEY`) and hex-encodes the result.  On boot it decrypts option 231 back into the community, so the cleartext value never crosses the LAN.  Because the key and the community are shared fleet-wide, running `G` once produces a value that works for every device.
 
-### Setting up (DHCP_ALWAYS)
+### Prepping a Windows DHCP server
+
+1. Open DHCP Management
+2. Right-click IPv4 and select `Set Predefined Options`
+3. Click `Add...`
+4. Enter the values as shown below and click `OK`
+![Add SNMP Hosts](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/DHCP-Support/images/AddSNMPHosts.jpg)
+5. Click `Add...`
+6. Enter the values as shown below and click `OK`
+![Add SNMP Read Community](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/DHCP-Support/images/AddSNMPReadCommunity.jpg)
+7. You can now set Scope Option values for Option 230 (authorized hosts) and option 231 (the encrypted read community from the "G" command — see "Community encryption" above)
+
+### Setting up a DHCP reservation (DHCP_ALWAYS or DHCP_IFAVAILABLE)
 
 1. With the device connected to serial, power it on and note its MAC address (printed at startup).
 2. Create a DHCP reservation for that MAC address on your DHCP server.
-3. On the reservation, add option 230 (authorized hosts) and option 231 (the encrypted community from the "G" command — see "Community encryption" above).
+3. On the reservation, add option 12 (Hostname) if desired.
 
 ### Tuning
 
 - `DHCPQueryInterval` is how often (in seconds) the device re-checks DHCP.  The device never waits longer than half the lease time, so a short lease won't be lost.  Set it to `0` to rely only on the lease time.
 - `authorizedSNMPOption` and `readCommunityOption` change which option numbers carry the authorized-host list and read community (defaults 230 and 231).
-- `revertWindowMinutes` is how long (in minutes) the device waits for an SNMP request after a network change before reverting (default 30).
+- `revertWindowMinutes` is how long (in minutes) the device waits for an SNMP request after a network change before reverting (default 15).
 - `COMMUNITY_KEY` is the shared secret used to encrypt the community (with the `G` command).  Keep it the same on every device; it must be at least 16 characters.
 
 ## Guidance and Limitations
@@ -148,7 +157,7 @@ The device XOR-encrypts the community with `COMMUNITY_KEY` and hex-encodes the r
   - Operating temperature: 0°F (-17.7°C) to 140°F (60°C)
   - Operating humidity: 5% to 90% (RH), non-condensing
 - Sensor Accuracy
-  - ±0.2 °C，±1.8 %RH
+  - ±0.2 °C, ±1.8 %RH
 - Power Consumption
   - 6W maximum via 802.3af Power-over-Ethernet
 - Ethernet

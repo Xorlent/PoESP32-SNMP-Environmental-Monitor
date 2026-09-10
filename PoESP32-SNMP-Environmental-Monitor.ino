@@ -16,12 +16,12 @@ enum DHCPMode { DHCP_NEVER, DHCP_IFAVAILABLE, DHCP_ALWAYS };
 const DHCPMode DHCPControl = DHCP_IFAVAILABLE;
 
 // Seconds between DHCP re-queries. Set to 0 to respect the server lease only
-const uint32_t DHCPQueryInterval = 600;
+const uint32_t DHCPQueryInterval = 3600;
 
 // Revert window (DHCP_IFAVAILABLE): minutes to wait for a valid SNMP request
 // after a DHCP-driven network change before reverting to the prior network
 // settings and rebooting.
-const uint16_t revertWindowMinutes = 30;
+const uint16_t revertWindowMinutes = 15;
 
 // DHCP option numbers carrying our custom provisioning data
 const uint8_t authorizedSNMPOption = 230; // authorized SNMP hosts (packed IPv4)
@@ -71,6 +71,7 @@ const uint8_t DEFAULT_AUTHORIZED_HOSTS_QTY = sizeof(DEFAULT_AUTHORIZED_HOSTS)/si
 #include <arduino-timer.h>
 #include <Preferences.h>
 #include "DHCPClient.h"
+#include "Encryption.h"
 
 #define SHT4X_DEBUG               false   // true enables heated measurement / equilibrium debug serial output
 #define EQUILIBRIUM_WINDOW_SIZE   8       // 8 samples = 2 seconds @ 250ms intervals
@@ -428,44 +429,11 @@ void setRevertPending(bool pending) {
   prefs.end();
 }
 
-////////---------------------------------------   Community encryption (XOR)   ---------------------------------------////////
+////////---------------------------------------   Community encryption   ---------------------------------------////////
 
-// XOR-obfuscate the read community so it does not travel in cleartext over DHCP.
-// This is obfuscation (the key lives in firmware), not strong crypto - sufficient
-// to keep the community out of casual packet captures.
-
-static uint8_t hexNibble(char c) {
-  if (c >= '0' && c <= '9') return c - '0';
-  if (c >= 'a' && c <= 'f') return c - 'a' + 10;
-  if (c >= 'A' && c <= 'F') return c - 'A' + 10;
-  return 0;
-}
-
-// Encrypt: cleartext -> hex( XOR(key, cleartext) ).
-void encryptCommunity(const char* plain, size_t len, char* hexOut, size_t hexOutSize) {
-  static const char hex[] = "0123456789abcdef";
-  size_t keyLen = sizeof(COMMUNITY_KEY) - 1;
-  if (hexOutSize < 2 * len + 1) return;
-  for (size_t i = 0; i < len; i++) {
-    uint8_t c = (uint8_t)plain[i] ^ (uint8_t)COMMUNITY_KEY[i % keyLen];
-    hexOut[2 * i]     = hex[c >> 4];
-    hexOut[2 * i + 1] = hex[c & 0x0F];
-  }
-  hexOut[2 * len] = '\0';
-}
-
-// Decrypt: hex( XOR(key, cleartext) ) -> cleartext, capped at maxLen.
-uint8_t decryptCommunity(const char* hexIn, size_t hexLen, char* out, uint8_t maxLen) {
-  size_t keyLen = sizeof(COMMUNITY_KEY) - 1;
-  size_t n = hexLen / 2;
-  if (n > maxLen) n = maxLen;
-  for (size_t i = 0; i < n; i++) {
-    uint8_t c = (hexNibble(hexIn[2 * i]) << 4) | hexNibble(hexIn[2 * i + 1]);
-    out[i] = (char)(c ^ (uint8_t)COMMUNITY_KEY[i % keyLen]);
-  }
-  out[n] = '\0';
-  return (uint8_t)n;
-}
+// Community encryption/decryption (ChaCha20) lives in Encryption.h/cpp. The
+// encryptCommunity()/decryptCommunity() helpers are used by the "G" command,
+// applyDhcp(), and printConfig(); they take COMMUNITY_KEY as the first argument.
 
 // Serial "G" command state machine (non-blocking). Type "G" + Enter to enter
 // generate-key mode, then type a community string to encrypt and print the DHCP
@@ -499,7 +467,7 @@ void handleSerialCommand() {
       Serial.println("(community truncated to 31 characters)");
     }
     char secret[2 * COMMUNITY_MAX_LEN + 1];
-    encryptCommunity(line.c_str(), line.length(), secret, sizeof(secret));
+    encryptCommunity(COMMUNITY_KEY, line.c_str(), line.length(), secret, sizeof(secret));
     Serial.print("DHCP option ");
     Serial.print(readCommunityOption);
     Serial.print(" value: ");
@@ -551,7 +519,7 @@ bool applyDhcp(const DHCPConfig& cfg) {
   if (cfg.hasCommunity) {
     // Option 231 carries the encrypted (hex) community; decrypt it, cap at 31.
     char decrypted[COMMUNITY_MAX_LEN + 1];
-    uint8_t decLen = decryptCommunity(cfg.community, cfg.communityLen, decrypted, COMMUNITY_MAX_LEN);
+    uint8_t decLen = decryptCommunity(COMMUNITY_KEY, cfg.community, cfg.communityLen, decrypted, COMMUNITY_MAX_LEN);
     if (decLen != communityLen || memcmp(community, decrypted, decLen) != 0) {
       // Print only the new ENCRYPTED value, never the cleartext community.
       Serial.print("DHCP: community changed -> "); Serial.println(cfg.community);
@@ -609,7 +577,7 @@ void printConfig() {
 
   // Show the community in its encrypted (hex) form, never as cleartext.
   char obfCommunity[2 * COMMUNITY_MAX_LEN + 1];
-  encryptCommunity(community, communityLen, obfCommunity, sizeof(obfCommunity));
+  encryptCommunity(COMMUNITY_KEY, community, communityLen, obfCommunity, sizeof(obfCommunity));
   Serial.print("Community (encrypted): "); Serial.println(obfCommunity);
   Serial.print("Authorized hosts ("); Serial.print(authorizedHostCount); Serial.println("):");
   for (uint8_t i = 0; i < authorizedHostCount; i++) {

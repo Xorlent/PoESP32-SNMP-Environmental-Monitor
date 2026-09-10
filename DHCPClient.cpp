@@ -240,13 +240,22 @@ void DHCPClient::release(const IPAddress& serverId, const IPAddress& clientIp) {
 void DHCPClient::printMAC(Stream& out) {
   uint8_t m[6];
   ETH.macAddress(m);
+
+  // Colon-separated form.
   out.print("MAC: ");
   for (int i = 0; i < 6; i++) {
     if (m[i] < 0x10) out.print('0');
     out.print(m[i], HEX);
     if (i < 5) out.print(':');
   }
-  out.println();
+
+  // Colon-less form for Windows DHCP reservations.
+  out.print(" (Use value ");
+  for (int i = 0; i < 6; i++) {
+    if (m[i] < 0x10) out.print('0');
+    out.print(m[i], HEX);
+  }
+  out.println(" for Windows DHCP reservation)");
 }
 
 // Parse a DHCP option stream after the magic cookie.
