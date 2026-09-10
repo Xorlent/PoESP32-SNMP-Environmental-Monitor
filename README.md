@@ -91,6 +91,7 @@ The device reads these options from your DHCP server:
 | 12 | Hostname |
 | 230 | Authorized SNMP hosts (4-byte IPv4 addresses, up to 8) |
 | 231 | SNMP read community (encrypted — see "Community encryption" below) |
+
 _Options 12, 230, 231 are optional if using mode `DHCP_IFAVAILABLE`_  
 
 ### SNMP Read Community encryption
