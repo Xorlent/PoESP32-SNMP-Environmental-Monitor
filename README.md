@@ -118,10 +118,10 @@ The device encrypts the community with ChaCha20 (keyed by `COMMUNITY_KEY`) and h
 1. Open DHCP Management
 2. Right-click IPv4 and select `Set Predefined Options`
 3. Click `Add...`
-4. Enter the values as shown below and click `OK`
+4. Enter the values as shown below and click `OK`  
 ![Add SNMP Hosts](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/DHCP-Support/images/AddSNMPHosts.jpg)
 5. Click `Add...`
-6. Enter the values as shown below and click `OK`
+6. Enter the values as shown below and click `OK`  
 ![Add SNMP Read Community](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/DHCP-Support/images/AddSNMPReadCommunity.jpg)
 7. You can now set Scope Option values for Option 230 (authorized hosts) and option 231 (the encrypted read community from the "G" command — see "Community encryption" above)
 
