@@ -1,6 +1,8 @@
 ### Uptime
 1.3.6.1.2.1.1.3.0
-### Hostname
+### sysName
+1.3.6.1.2.1.1.5.0
+### Hostname (same as sysName)
 1.3.6.1.4.1.119.2.1.3.0
 ### Temperature (.1 degrees C)
 1.3.6.1.4.1.119.5.1.2.1.5.1

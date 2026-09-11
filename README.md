@@ -14,29 +14,8 @@ With Vertiv unceremoniously stop-shipping and then discontinuing the [Geist Watc
    - or a custom SHT41-based sensor.  All files and instructions can be found in the /SHT4X folder.  As little as $2.20/each shipped in quantities of 30.
 3. A single [M5Stack ESP32 Downloader kit](https://shop.m5stack.com/products/esp32-downloader-kit) (not required for Unit-PoE-P4), currently $9.95 USD
 
-## Cost Analysis
-One-time cost for a USB-to-serial device (PoESP32 only): $9.95 plus tax and shipping  
-Total cost per unit: $31.85 plus tax and shipping  
-Programming time per unit: < 10 minutes  
-
-## Device Cost Comparison (temperature/humidity only)
-- $32: this PoESP32-based device
-- $220 before stop-ship: Vertiv Watchdog 15P (discontinued)
-- $190 on sale: AKCP sensorProbe1+ Pro
-- $315: NTI E-MICRO-TRHP
-- $199: MONNIT PoE-X Temperature
-- $295: Room Alert 3S
-
-## Device Capability Comparison
-This project produces a SNMPv1/2c temperature and humidity monitoring device with flashed configuration settings and no remote management capability.  Some would see this as a positive from a security-perspective, but it could prove challenging in network environments where change is constant.  A re-flash/re-programming is required to modify any configuration options:
-- Host name
-- Device IP and subnet
-- IP gateway
-- SNMP read community string
-- Authorized SNMP monitoring node IP address list
-
-__Bottom line: If you need SNMPv3 or desire web management and/or SNMP write functionality, you could enhance this project's code or simply purchase a commercial product.__  
-_Update: See the [DHCP-Support Branch](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/tree/DHCP-Support) to test the V.2.0 candidate with full DHCP configuration capabilities_
+## Device Overview
+This project produces a SNMPv1/2c temperature and humidity monitoring device.  Configuration is set when the device is flashed, and it can optionally be managed from a DHCP server.
 
 ## Programming
 _Once you've successfully programmed a single unit, skip step 1.  Repeating this process takes less than 5 minutes from start to finish._
@@ -47,7 +26,9 @@ _Once you've successfully programmed a single unit, skip step 1.  Repeating this
 > [!TIP]
 > If you have fingernails, it can be quicker to slide a nail between the case halves, starting with the end opposite the Ethernet port and using another nail to pull the retaining tabs back
 3. In Arduino, open the project file (PoESP32-SNMP-Environmental-Monitor.ino)
-   - Edit the hostname, IP address, subnet, gateway, SNMP read community, and authorized hosts lists at the very top of the file.
+   - Choose your DHCP mode (see the DHCP Provisioning section below) and set the appropriate value for `DHCPControl`
+   - Edit the hostname, IP address, subnet, gateway, SNMP read community, and authorized hosts lists at the very top of the file
+   - If using DHCP, ensure you set the COMMUNITY_KEY value; the same value must be used on all PoESP32 devices sharing the same DHCP-provided SNMP read community (option 231) value
    - Select Tools->Board->esp32 and select "ESP32 Dev Module" if using PoESP32
    - OR select Tools->Board->esp32 and select "ESP32P4 Dev Module" if using Unit-PoE-P4
      - Set ESP32P4 board parameters according to [this screenshot](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/images/ESP32P4-Config.jpg)
@@ -81,6 +62,70 @@ _Once you've successfully programmed a single unit, skip step 1.  Repeating this
     - If you have PRTG, pre-configured device templates are available for this project at https://github.com/Xorlent/PRTG-OIDLIBS
     - Don't have a monitoring platform?  [PRTG Freeware](https://www.paessler.com/free_network_monitor) would support monitoring and alerting for up to 20 of these devices
 
+## DHCP Provisioning (optional)
+
+By default the device uses the settings you compiled into the sketch, allowing values present in valid DHCP server responses to override the compiled values (`DHCP_IFAVAILABLE`).
+
+### Choose a mode
+
+Near the top of the sketch, set `DHCPControl` to one of:
+
+| Mode | Description |
+|------|--------------|
+| `DHCP_NEVER` | Do not use DHCP.  Use only the settings configured within your sketch. |
+| `DHCP_IFAVAILABLE` | Default.  Start from the compiled settings, then let any DHCP options you configure override them.  If the IP, subnet, or gateway changes, the device saves the change and reboots.  If no SNMP request arrives within the revert window (default 15 minutes) after that reboot, it reverts to the previous network settings and reboots again. |
+| `DHCP_ALWAYS` | Wait for DHCP to supply everything before starting.  Retries every 10 seconds and prints which required options are still missing in the serial console. |
+
+### What DHCP supplies
+
+The device reads these options from your DHCP server:
+
+| Option | Setting |
+|--------|---------|
+| IP / 1 / 3 | IP address, subnet mask, gateway |
+| 12 | Hostname |
+| 230 | Authorized SNMP hosts (4-byte IPv4 addresses, up to 8) |
+| 231 | SNMP read community (encrypted — see "Community encryption" below) |
+
+_Options 12, 230, 231 are optional if using mode `DHCP_IFAVAILABLE`_  
+
+### SNMP Read Community encryption
+
+The read community is never transmitted in cleartext over DHCP.
+
+#### Generating an encrypted read community value
+
+1. Set `COMMUNITY_KEY` in the sketch to a shared secret (the same string on every device).
+2. Once programmed, on any device's serial console, type `G` + Enter, then type the read community string you want to use (e.g. `readonly`).
+3. The device prints the encrypted value you can then paste into the DHCP server's option 231 string.
+
+The device encrypts the community with ChaCha20 (keyed by `COMMUNITY_KEY`) and hex-encodes the result.  On boot it decrypts option 231 back into the community, so the cleartext value never crosses the LAN.  Because the key and the community are shared fleet-wide, running `G` once produces a value that works for every device.
+
+### Prepping a Windows DHCP server
+
+1. Open DHCP Management
+2. Right-click IPv4 and select `Set Predefined Options`
+3. Click `Add...`
+4. Enter the values as shown below and click `OK`  
+![Add SNMP Hosts](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/DHCP-Support/images/AddSNMPHosts.jpg)
+5. Click `Add...`
+6. Enter the values as shown below and click `OK`  
+![Add SNMP Read Community](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/DHCP-Support/images/AddSNMPReadCommunity.jpg)
+7. You can now set Scope Option values for Option 230 (authorized hosts) and option 231 (the encrypted read community from the "G" command — see "Community encryption" above)
+
+### Setting up a DHCP reservation (DHCP_ALWAYS or DHCP_IFAVAILABLE)
+
+1. With the device connected to serial, power it on and note its MAC address (printed at startup).
+2. Create a DHCP reservation for that MAC address on your DHCP server.
+3. On the reservation, add option 12 (Hostname) if desired.
+
+### Tuning
+
+- `DHCPQueryInterval` is how often (in seconds) the device re-checks DHCP.  The device never waits longer than half the lease time, so a short lease won't be lost.  Set it to `0` to rely only on the lease time.
+- `authorizedSNMPOption` and `readCommunityOption` change which option numbers carry the authorized-host list and read community (defaults 230 and 231).
+- `revertWindowMinutes` is how long (in minutes) the device waits for an SNMP request after a network change before reverting (default 15).
+- `COMMUNITY_KEY` is the shared secret used to encrypt the community (with the `G` command).  Keep it the same on every device; it must be at least 16 characters.
+
 ## Guidance and Limitations
 - For monitoring, configure one OID per sensor.  This custom SNMP parser will only respond to one OID per request.
 - If you receive a "General Failure" when requesting a valid measurement OID, this means the device is having trouble communicating with the temperature/humidity sensor.
@@ -94,21 +139,13 @@ _Once you've successfully programmed a single unit, skip step 1.  Repeating this
   3. PoESP32-Environmental-Mini-Magnet.step : 3D print model for magnet mounting (space constrained, compatible with 8mm x 2mm disc magnets)
   4. PoESP32-Environmental-Mid.step : 3D print model for zip tie mounting
   5. PoESP32-Environmental-Mid-Magnet.step : 3D print model for magnet mounting (compatible with 8mm x 2mm disc magnets)
-  6. If you want to modify the models and make your own custom design:
-     - [Onshape link - 1RU Base](https://cad.onshape.com/documents/126ed9d0ea20223ee2558e2e/w/5dc774b929e3cc882e2ccc02/e/70eb0dc678e6fe37b06c7b4d?renderMode=0&uiState=6674e589c5f25f7f012b9c1e)
-     - [Onshape link - 1RU Lightguides for single-material printing](https://cad.onshape.com/documents/126ed9d0ea20223ee2558e2e/w/5dc774b929e3cc882e2ccc02/e/16542899019e9250b0249f1e?renderMode=0&uiState=6674e5a1c5f25f7f012b9c2a)
-     - [Onshape link - 1RU Wire Cover](https://cad.onshape.com/documents/126ed9d0ea20223ee2558e2e/w/5dc774b929e3cc882e2ccc02/e/cc43e711478951692c63e341?renderMode=0&uiState=6674e5aec5f25f7f012b9c2f)
-     - [Onshape link - Mini](https://cad.onshape.com/documents/126ed9d0ea20223ee2558e2e/w/f747afb8fc8c6e8e288e0fc9/e/70eb0dc678e6fe37b06c7b4d?renderMode=0&uiState=666d1111cd9bd3671768c9c6)
-     - [Onshape link - Mini Magnetic](https://cad.onshape.com/documents/126ed9d0ea20223ee2558e2e/w/bfca9ecb4e85ab436c8e3736/e/70eb0dc678e6fe37b06c7b4d?renderMode=0&uiState=666d10f6cd9bd3671768c9a8)
-     - [Onshape link - Mid](https://cad.onshape.com/documents/126ed9d0ea20223ee2558e2e/w/86908f6e4038f162632614a8/e/70eb0dc678e6fe37b06c7b4d?renderMode=0&uiState=6675aa9981594361815fa619)
-     - [Onshape link - Mid Magnetic](https://cad.onshape.com/documents/126ed9d0ea20223ee2558e2e/w/887531df77e994a6e9e16eac/e/70eb0dc678e6fe37b06c7b4d?renderMode=0&uiState=666d10e8cd9bd3671768c99a)
 
 ## Technical Information
 - Operating Specifications
   - Operating temperature: 0°F (-17.7°C) to 140°F (60°C)
   - Operating humidity: 5% to 90% (RH), non-condensing
 - Sensor Accuracy
-  - ±0.2 °C，±1.8 %RH
+  - ±0.2 °C, ±1.8 %RH
 - Power Consumption
   - 6W maximum via 802.3af Power-over-Ethernet
 - Ethernet
@@ -116,5 +153,5 @@ _Once you've successfully programmed a single unit, skip step 1.  Repeating this
   - 10/100 Mbit twisted pair copper
   - IEEE 802.3af Power-over-Ethernet
 - I/O Configuration
-  - SHT40 (ENV IV) or SHT30 (ENV III) temperature and humidity sensor
+  - SHT40 temperature and humidity sensor
   - See [PORTINFO.md](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/blob/main/PORTINFO.md)
