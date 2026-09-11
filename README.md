@@ -14,11 +14,6 @@ With Vertiv unceremoniously stop-shipping and then discontinuing the [Geist Watc
    - or a custom SHT41-based sensor.  All files and instructions can be found in the /SHT4X folder.  As little as $2.20/each shipped in quantities of 30.
 3. A single [M5Stack ESP32 Downloader kit](https://shop.m5stack.com/products/esp32-downloader-kit) (not required for Unit-PoE-P4), currently $9.95 USD
 
-## Cost Analysis
-One-time cost for a USB-to-serial device (PoESP32 only): $9.95 plus tax and shipping  
-Total cost per unit: $31.85 plus tax and shipping  
-Programming time per unit: < 10 minutes  
-
 ## Device Overview
 This project produces a SNMPv1/2c temperature and humidity monitoring device.  Configuration is set when the device is flashed, and it can optionally be managed from a DHCP server.
 
