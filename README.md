@@ -36,7 +36,7 @@ This project produces a SNMPv1/2c temperature and humidity monitoring device wit
 - Authorized SNMP monitoring node IP address list
 
 __Bottom line: If you need SNMPv3 or desire web management and/or SNMP write functionality, you could enhance this project's code or simply purchase a commercial product.__  
-_Update: See the [DHCP-Support Branch](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/tree/DHCP-Support) to test the V.2.0 candidate with full DHCP configuration capabilities_
+_Update: See the [DHCP-Support Branch](https://github.com/Xorlent/PoESP32-SNMP-Environmental-Monitor/tree/DHCP-Support) to test the V.2.0 candidate that features complete device configuration via DHCP options_
 
 ## Programming
 _Once you've successfully programmed a single unit, skip step 1.  Repeating this process takes less than 5 minutes from start to finish._
